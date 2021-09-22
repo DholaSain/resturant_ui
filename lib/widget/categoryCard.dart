@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:resturant_ui/restaurant.dart';
-import 'package:resturant_ui/widget/recipiesCard.dart';
+import 'package:resturant_ui/screen/Product_details.dart';
+import 'package:resturant_ui/screen/product_detail.dart';
 
 class CategoryCard extends StatefulWidget {
   @override

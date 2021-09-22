@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:resturant_ui/restaurant.dart';
+import 'package:resturant_ui/screen/Product_details.dart';
 
 class RecipiesCard extends StatelessWidget {
+  String? title;
+  String? dec;
+  String? price;
+  String? image;
+  RecipiesCard({this.dec,this.image,this.price,this.title});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -38,8 +43,8 @@ class RecipiesCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(18.0)),
                   image: DecorationImage(
-                      image: AssetImage(
-                        'assets/imgs/lobster.jpg',
+                      image: NetworkImage(
+                        image!,
                       ),
                       fit: BoxFit.fill),
                 ),
@@ -48,11 +53,11 @@ class RecipiesCard extends StatelessWidget {
             SizedBox(
               height: 8,
             ),
-            Text("Title for item"),
+            Text(title!),
              SizedBox(
               height: 5,
             ),
-             Text("Rs.200"),
+             Text("Rs "+'$price'),
              
           ],
         ),

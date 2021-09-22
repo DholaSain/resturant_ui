@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:resturant_ui/restaurant.dart';
+import 'package:resturant_ui/screen/Product_details.dart';
 
 class AddtoCartCard extends StatefulWidget {
   @override
@@ -30,7 +30,7 @@ class _AddtoCartCardState extends State<AddtoCartCard> {
       },
       child: Container(
        height: 150,
-      //  width: 200,
+       width: 200,
         decoration: BoxDecoration(
           color: Colors.white,
         
