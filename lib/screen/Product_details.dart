@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:resturant_ui/service/database.dart';
 
 class RestaurantPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class RestaurantPage extends StatefulWidget {
 
 class _RestaurantPageState extends State<RestaurantPage> {
   int _n = 1;
-
+  int? totalPrice;
   void minus() {
     setState(() {
       if (_n != 1) _n--;
@@ -159,7 +160,22 @@ class _RestaurantPageState extends State<RestaurantPage> {
                     Center(
                       child: InkWell(
                         onTap: () {
-                          Database().addCart(widget.id!,_n, widget.price!);
+                          try {
+                            totalPrice = widget.price! * _n;
+                            Database().addCart(widget.id!, _n, totalPrice!);
+                            Get.back();
+                            Get.snackbar(
+                                "${widget.title} Add in Cart", "Cheak in Cart",
+                                snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.green
+                              ,
+                              colorText: Colors.white)
+                              ;
+                          } catch (e) {
+                            Get.snackbar(
+                                "${widget.title} Not Added", e.toString(),
+                                snackPosition: SnackPosition.BOTTOM);
+                          }
                         },
                         child: Container(
                           width: 200,

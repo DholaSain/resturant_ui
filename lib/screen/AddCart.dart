@@ -1,21 +1,63 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:resturant_ui/screen/Product_details.dart';
+import 'package:resturant_ui/service/database.dart';
 import 'package:resturant_ui/widget/AddtoCartCard.dart';
 import 'package:resturant_ui/screen/product_detail.dart';
 
-class AddCart extends StatelessWidget {
-  const AddCart({Key? key}) : super(key: key);
+class AddCart extends StatefulWidget {
+  @override
+  State<AddCart> createState() => _AddCartState();
+}
+
+class _AddCartState extends State<AddCart> {
+  int? sum=0;
+
+  int? total=0;
+@override
+  void initState() {
+    super.initState();
+  price();
+  }
+  Future<void> price() {
+    sum=0;
+    total=0;
+   return FirebaseFirestore.instance.collection('user').get().then(
+      (querySnapshot) {
+        querySnapshot.docs.forEach((result) {
+          sum = sum! + result.data()['totalprice'] as int?;
+        });
+       setState(() {
+         total=sum;
+         
+       });
+      },
+    );
+  }
+
+  String? id;
+
+  String? category;
+
+  int? quantity;
+
+  int? totalprice;
+
+  final db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: 
-          new Size(MediaQuery.of(context).size.width, 150.0),
+          preferredSize: new Size(MediaQuery.of(context).size.width, 150.0),
           child: Container(
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [ Colors.orange,Colors.yellow,]),
+              gradient: LinearGradient(colors: [
+                Colors.orange,
+                Colors.yellow,
+              ]),
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
@@ -29,13 +71,15 @@ class AddCart extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Row(
                 children: [
-                   RoundButton(
-                        icon: Icons.arrow_back_ios,
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                     SizedBox(width: 20,),
+                  RoundButton(
+                    icon: Icons.arrow_back_ios,
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
                   Text(
                     'Order List',
                     style: new TextStyle(
@@ -48,48 +92,106 @@ class AddCart extends StatelessWidget {
             ),
           ),
         ),
-        body: Center(
+        body: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AddtoCartCard(),
-              Spacer(),
-                InkWell(
-                        onTap: () {},
-                        child: Container(
-                          alignment: Alignment.bottomCenter,
-                          width: 200,
-                          margin: EdgeInsets.all(20),
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              gradient: LinearGradient(
-                                colors: [Colors.yellow, Colors.orange],
-                              ),
-                              boxShadow: [
-                                BoxShadow(blurRadius: 5.0, color: Colors.grey)
-                              ]),
-                          child: Row(
-                            children: <Widget>[
-                              Spacer(),
-                              Text(
-                                "Order know",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 21),
-                              ),
-                              Spacer(),
-                              Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
-                              )
-                            ],
-                          ),
-                        ),
+              Container(
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.all(10),
+                height: 60,
+                width: 300,
+                color: Colors.red,
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('Total Price RS:$total',style: TextStyle(
+                        fontSize:20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
+                      Spacer(),
+                      IconButton(onPressed:(){price();} ,color: Colors.white,iconSize:30,icon: Icon(Icons.refresh),),
+                      // IconButton(Icons.refresh,color:Colors.white,onTap(){price()});
+                    ],
+                  ),
+                ),
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: db.collection('user').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var item = snapshot.data!.docs;
+
+                    return ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: item.length,
+                        itemBuilder: (context, index) {
+                          id = item[index].get('ProductId');
+                          category = item[index].get('category');
+                          quantity=item[index].get('quantity');
+                          totalprice=item[index].get('totalprice');
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Text("${item[index].get('category')}"),
+                                AddtoCartCard(
+                                  total:quantity,
+                                  price:totalprice,
+                                  id: id,
+                                  name: category,
+                                ),
+                                // Spacer(),
+                              ],
+                            ),
+                          );
+                        });
+                  } else {
+                    return LinearProgressIndicator();
+                  }
+                },
+              ),
+              InkWell(
+                onTap: () {
+                  Database().order();
+                },
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  width: 200,
+                  margin: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      gradient: LinearGradient(
+                        colors: [Colors.yellow, Colors.orange],
                       ),
-                 
+                      boxShadow: [
+                        BoxShadow(blurRadius: 5.0, color: Colors.grey)
+                      ]),
+                  child: Row(
+                    children: <Widget>[
+                      Spacer(),
+                      Text(
+                        "Order Now",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 21),
+                      ),
+                      Spacer(),
+                      Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ));

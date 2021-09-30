@@ -13,7 +13,7 @@ class _CategoryCardState extends State<CategoryCard> {
   Widget build(BuildContext context) {
     return  GestureDetector(
         onTap: () {
-          Get.to(RecipiesCard());
+          // Get.to(RecipiesCard());
         },
         child: Container(
           

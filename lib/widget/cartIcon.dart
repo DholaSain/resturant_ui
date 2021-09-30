@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:resturant_ui/Binding/all_binding.dart';
+import 'package:resturant_ui/controller/cart_controller.dart';
 import 'package:resturant_ui/screen/AddCart.dart';
 
 class CartIcon extends StatelessWidget {
@@ -16,7 +18,8 @@ class CartIcon extends StatelessWidget {
             color: Colors.black,
           ),
           onPressed: () {
-             Get.to(AddCart());
+
+             Get.to(()=>AddCart());
 
           },
         ),

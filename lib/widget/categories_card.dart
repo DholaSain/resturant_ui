@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:resturant_ui/Binding/all_binding.dart';
+import 'package:resturant_ui/controller/UserCart_Controller.dart';
+import 'package:resturant_ui/controller/cart_controller.dart';
 import 'package:resturant_ui/controller/category_controller.dart';
 import 'package:resturant_ui/screen/category.dart';
 import 'package:resturant_ui/utils/global_variable.dart';
@@ -9,6 +11,7 @@ import 'package:resturant_ui/utils/global_variable.dart';
 class CategoriesCard extends StatelessWidget {
   
   Color buttonDefualtColor = Colors.white;
+  // final usercartController = Get.find<UserCartController>();
 
   final categoryController = Get.find<CategoryController>();
   @override
@@ -74,6 +77,8 @@ class CategoriesCard extends StatelessWidget {
                           height: 8,
                         ),
                         Text(
+                          // "${itemsId.value}",
+                          // usercartController.usercartdata![index].categoryId!,
                           categoryController.categorydata![index].name!,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
