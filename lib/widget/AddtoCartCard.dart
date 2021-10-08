@@ -20,6 +20,8 @@ class AddtoCartCard extends StatefulWidget {
 
 class _AddtoCartCardState extends State<AddtoCartCard> {
    RxBool orderStatus = false.obs;
+     var curruntID = ''.obs;
+  var expanded = false.obs;
   // final cartController = Get.find<CartController>();
   final db = FirebaseFirestore.instance;
   RxInt _n = 1.obs;
