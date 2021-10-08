@@ -1,16 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:resturant_ui/controller/UserCart_Controller.dart';
 import 'package:resturant_ui/controller/product_Controller.dart';
 import 'package:resturant_ui/screen/Product_details.dart';
+import 'package:resturant_ui/service/database.dart';
+import 'package:resturant_ui/utils/global_variable.dart';
 
 const defaultPadding = 16.0;
 
 class ProductsCard extends StatelessWidget {
-
- 
+int? index;
+final uid = FirebaseAuth.instance.currentUser!.uid;
 
   Color buttonDefualtColor = Colors.white;
-
+final cartController = Get.find<UserCartController>();
   final productController = Get.find<ProductController>();
   @override
   Widget build(BuildContext context) {
@@ -27,10 +33,10 @@ class ProductsCard extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 6,
               mainAxisSpacing: 6,
-              childAspectRatio: 1/1.3,
+              childAspectRatio: 1/1.5,
             ),
             itemBuilder: (context, index) {
-            
+           
               return GestureDetector(
                   onTap: () {
                     Get.to(RestaurantPage(
@@ -46,12 +52,12 @@ class ProductsCard extends StatelessWidget {
                             //   binding: ProductsBinding());
                   },
                   child: Container(
-                    height: 350,
+                    height: 450,
                     width: 250,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(
-                        Radius.circular(20),
+                        Radius.circular(10),
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -61,8 +67,8 @@ class ProductsCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.all(7),
                     // width: MediaQuery.of(context).size.width / 2,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -71,7 +77,7 @@ class ProductsCard extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(18.0)),
+                                  BorderRadius.all(Radius.circular(10.0)),
                               image: DecorationImage(
                                   image: NetworkImage(productController
                                       .dataGetter![index].fimage!),
@@ -107,6 +113,111 @@ class ProductsCard extends StatelessWidget {
                                           color: Colors.red,
                                           fontWeight: FontWeight.bold),
                                     ),
+
+                                    
+                                    Obx((){ 
+                                     return cartController.usercartdata!.any((element) => element.id!.contains('${productController.dataGetter![index].id}'))?
+                                      Column(
+                                        children: [
+                                          Divider(),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              
+                                            Container(
+                                          height: 20,
+                                          child: new FloatingActionButton(
+                                            onPressed: () {
+                                              // Database().removeLike(widget.id!,
+                                              //    item[index].get('price'), widget.total!);
+                                            },
+                                            child: new Icon(
+                                              Icons.remove,
+                                              size: 20,
+                                              color: Colors.black,
+                                            ),
+                                            backgroundColor: Colors.white,
+                                          ),
+                                    ),
+                                  Container(
+                                    height: 20,
+                                    child: StreamBuilder<QuerySnapshot>(
+        stream: 
+           FirebaseFirestore.instance .collection('user')
+            .doc(uid)
+            .collection("PendingOrder")
+          
+            .where("ProductId", isEqualTo: cartController.usercartdata![index].id)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var item = snapshot.data!.docs;
+            
+            return ListView.builder(
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: item.length,
+                itemBuilder: (context, index) {return new Text('${item[index].get('quantity')}',
+                                              style: new TextStyle(fontSize: 20.0));});}
+                                              else{
+                                                return CircularProgressIndicator();
+                                              }
+                                              }),
+                                  ),
+                                    
+                                    Container(
+                                          height: 20,
+                                          child: new FloatingActionButton(
+                                            onPressed: () {
+                                              // Database().addLike(widget.id!,
+                                              //     item[index].get('price'), widget.total!);
+                                            },
+                                            child: Icon(
+                                              
+                                              Icons.add,
+                                              size: 20,
+                                              color: Colors.black,
+                                            ),
+                                            backgroundColor: Colors.white,
+                                          ),
+                                    ),
+                                    ],),
+                                        ],
+                                      ) :Container(
+                                      width: 40,
+                                      margin: EdgeInsets.all(5),
+                                      padding: EdgeInsets.all(5),
+                                      decoration:BoxDecoration(
+borderRadius: BorderRadius.circular(10),
+                                        color: Colors.red,
+                                      ),
+                                      child: Text('Add to Cart',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),),
+                                    );
+
+                                      }),
+                                    
+                                    SizedBox(height: 5,)
+                                    // Text("${productController.dataGetter![index].id}"),
+                                    // Text('${cartController.usercartdata![index].id}'),
+                                      // msgs.id ==cartController.usercartdata![index].id?
+                                    
+                              
+//                                     Container(
+//                                       width: 50,
+//                                       margin: EdgeInsets.all(5),
+//                                       padding: EdgeInsets.all(5),
+//                                       decoration:BoxDecoration(
+// borderRadius: BorderRadius.circular(10),
+//                                         color: Colors.red,
+//                                       ),
+//                                       child: Text('Add to Cart',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,
+//                                       fontWeight: FontWeight.bold,
+//                                       color: Colors.white),),
+//                                     )
+//                                   : Container()
                         // Text(
                         //   productController.dataGetter![index].ftitle!,
                         //   style: TextStyle(fontWeight: FontWeight.bold),
