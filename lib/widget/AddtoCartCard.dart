@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:resturant_ui/controller/cart_controller.dart';
@@ -6,28 +7,41 @@ import 'package:resturant_ui/screen/Product_details.dart';
 import 'package:resturant_ui/service/database.dart';
 
 class AddtoCartCard extends StatefulWidget {
-  AddtoCartCard({this.price, this.total, this.name, this.id});
+  AddtoCartCard({this.price, this.total, this.name, this.status,this.id});
   String? id;
   String? name;
+  bool?status;
   int? price;
   int? total;
   @override
+  
   _AddtoCartCardState createState() => _AddtoCartCardState();
 }
 
 class _AddtoCartCardState extends State<AddtoCartCard> {
+   RxBool orderStatus = false.obs;
   // final cartController = Get.find<CartController>();
   final db = FirebaseFirestore.instance;
   RxInt _n = 1.obs;
-
+cheak(){
+  if(widget.status==true){
+ orderStatus.value=true;
+  }
+  else{
+orderStatus.value=false;
+  }
+}
   void minus() {
     if (_n != 1) _n = _n - 1;
   }
-
   void add() {
     _n = _n + 1;
   }
-
+@override
+  void initState() {
+    super.initState();
+    cheak();
+  }
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -108,9 +122,11 @@ class _AddtoCartCardState extends State<AddtoCartCard> {
                                         fontSize: 20,
                                         color: Colors.black)),
                                 Spacer(),
-                                Row(
+                                 orderStatus.value?Text('Quantity : '+'${widget.total}',textAlign: TextAlign.center,style: TextStyle(
+                                   fontSize: 20,fontWeight: FontWeight.bold,color: Colors.red
+                                 ),):  Row(
                                   children: [
-                                    Container(
+                                 Container(
                                       height: 30,
                                       child: new FloatingActionButton(
                                         onPressed: () {
@@ -161,7 +177,7 @@ class _AddtoCartCardState extends State<AddtoCartCard> {
                                          fontWeight: FontWeight.bold,
                                          color: Colors.white
                                        ),),
-                                                          ),
+                                        ),
                                      ),
                                   ],
                                 )
