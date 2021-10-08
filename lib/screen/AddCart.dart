@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:resturant_ui/Binding/all_binding.dart';
 import 'package:resturant_ui/screen/Product_details.dart';
+import 'package:resturant_ui/screen/orderPlace.dart';
 import 'package:resturant_ui/service/database.dart';
 import 'package:resturant_ui/widget/AddtoCartCard.dart';
 import 'package:resturant_ui/screen/product_detail.dart';
@@ -12,26 +16,56 @@ class AddCart extends StatefulWidget {
 }
 
 class _AddCartState extends State<AddCart> {
-  int? sum=0;
-
-  int? total=0;
-@override
+  String userId=FirebaseAuth.instance.currentUser!.uid;
+  int? sum = 0;
+  int? total = 0;
+  RxBool orderStatus = false.obs;
+  @override
   void initState() {
     super.initState();
-  price();
+    price();
+    cheak();
   }
+cheak(){
+   
+    return FirebaseFirestore.instance
+        .collection('user')
+        .doc(userId)
+        .collection("PendingOrder")
+        .get()
+        .then(
+      (querySnapshot) {
+        querySnapshot.docs.forEach((result) {
+          if(result.data()['status']!='Pending'){
+orderStatus.value=false;
+
+          }
+        else{
+            orderStatus.value=true;
+        }
+        });
+        // setState(() {
+        //   total = sum;
+        // });
+      },
+    );
+}
   Future<void> price() {
-    sum=0;
-    total=0;
-   return FirebaseFirestore.instance.collection('user').get().then(
+    sum = 0;
+    total = 0;
+    return FirebaseFirestore.instance
+        .collection('user')
+        .doc(userId)
+        .collection("PendingOrder")
+        .get()
+        .then(
       (querySnapshot) {
         querySnapshot.docs.forEach((result) {
           sum = sum! + result.data()['totalprice'] as int?;
         });
-       setState(() {
-         total=sum;
-         
-       });
+        setState(() {
+          total = sum;
+        });
       },
     );
   }
@@ -41,7 +75,7 @@ class _AddCartState extends State<AddCart> {
   String? category;
 
   int? quantity;
-
+String?status;
   int? totalprice;
 
   final db = FirebaseFirestore.instance;
@@ -106,20 +140,28 @@ class _AddCartState extends State<AddCart> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('Total Price RS:$total',style: TextStyle(
-                        fontSize:20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      )),
+                      Text('Total Price RS:$total',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          )),
                       Spacer(),
-                      IconButton(onPressed:(){price();} ,color: Colors.white,iconSize:30,icon: Icon(Icons.refresh),),
+                      IconButton(
+                        onPressed: () {
+                          price();
+                        },
+                        color: Colors.white,
+                        iconSize: 30,
+                        icon: Icon(Icons.refresh),
+                      ),
                       // IconButton(Icons.refresh,color:Colors.white,onTap(){price()});
                     ],
                   ),
                 ),
               ),
               StreamBuilder<QuerySnapshot>(
-                stream: db.collection('user').snapshots(),
+                stream: db.collection('user').doc(userId).collection("PendingOrder").snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var item = snapshot.data!.docs;
@@ -130,20 +172,24 @@ class _AddCartState extends State<AddCart> {
                         shrinkWrap: true,
                         itemCount: item.length,
                         itemBuilder: (context, index) {
+                          
                           id = item[index].get('ProductId');
                           category = item[index].get('category');
-                          quantity=item[index].get('quantity');
-                          totalprice=item[index].get('totalprice');
+                          quantity = item[index].get('quantity');
+                          totalprice = item[index].get('totalprice');
+                          status=item[index].get('status');
+                       
                           return Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 // Text("${item[index].get('category')}"),
                                 AddtoCartCard(
-                                  total:quantity,
-                                  price:totalprice,
+                                  total: quantity,
+                                  price: totalprice,
                                   id: id,
                                   name: category,
+                                  status: orderStatus.value,
                                 ),
                                 // Spacer(),
                               ],
@@ -155,9 +201,13 @@ class _AddCartState extends State<AddCart> {
                   }
                 },
               ),
-              InkWell(
-                onTap: () {
-                  Database().order();
+              // Text('$status'),
+              orderStatus.value?Text(''):  InkWell(
+                onTap: () async {
+                  await Database().order();
+                  Database().statusCahnge();
+                 
+                  Get.off(()=>OrderPlace(),binding: OrderStatusBinding());
                 },
                 child: Container(
                   alignment: Alignment.bottomCenter,

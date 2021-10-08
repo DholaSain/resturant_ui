@@ -162,7 +162,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                         onTap: () {
                           try {
                             totalPrice = widget.price! * _n;
-                            Database().addCart(widget.id!, _n, totalPrice!);
+                            Database().addCart(widget.id!, _n, totalPrice!,widget.image!,widget.title!,widget.dec!);
                             Get.back();
                             Get.snackbar(
                                 "${widget.title} Add in Cart", "Cheak in Cart",
