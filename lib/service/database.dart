@@ -176,6 +176,7 @@ _firestore.collection('user').doc(userId).collection("PendingOrder").doc(product
         .collection('user')
         .doc(userId)
         .collection("PendingOrder")
+        // .where('category',isEqualTo: categoryName.value)
         .snapshots()
         .map((QuerySnapshot queryData) {
       List<UserCartModel> dataList = [];

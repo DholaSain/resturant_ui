@@ -44,6 +44,7 @@ class CategoriesCard extends StatelessWidget {
                       }
                       debugPrint(categoryName.value);
                       Get.put(ProductController()).onInit();
+                    
                       
                     },
                     child: Column(

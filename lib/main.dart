@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:resturant_ui/controller/orderStatus_Controller.dart';
+import 'package:resturant_ui/screen/login.dart';
 import 'package:resturant_ui/screen/signUp.dart';
 import 'package:resturant_ui/service/dynamicLink.dart';
 import 'package:resturant_ui/utils/create_dynamicLinks.dart';
@@ -22,7 +23,7 @@ void main() async {
   Get.put(UserCartController());
     Get.put(CategoryController());
     Get.put(OrderStatusController());
-    // Get.lazyPut<OrderStatusController>(() => OrderStatusController());
+    Get.lazyPut<OrderStatusController>(() => OrderStatusController());
     DynamicLinkService().handleDynamicLinks();
   runApp(MyApp());
 }
