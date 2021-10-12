@@ -4,7 +4,10 @@ import 'package:get/get.dart';
 import 'package:resturant_ui/controller/UserCart_Controller.dart';
 import 'package:resturant_ui/controller/product_Controller.dart';
 import 'package:resturant_ui/screen/Product_details.dart';
+import 'package:resturant_ui/service/database.dart';
+
 const defaultPadding = 16.0;
+
 // ignore: must_be_immutable
 class ProductsCard extends StatelessWidget {
   int? index;
@@ -111,67 +114,155 @@ class ProductsCard extends StatelessWidget {
                           return cartController.usercartdata!.any((element) =>
                                   element.id!.contains(
                                       '${productController.dataGetter![index].id}'))
-                              ? Column(
-                                  children: [
-                                    Divider(),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: 20,
-                                          child: new FloatingActionButton(
-                                            onPressed: () {
-                                              // Database().removeLike(widget.id!,
-                                              //    item[index].get('price'), widget.total!);
-                                            },
-                                            child: new Icon(
-                                              Icons.remove,
-                                              size: 20,
-                                              color: Colors.black,
-                                            ),
-                                            backgroundColor: Colors.white,
-                                          ),
-                                        ),
-                                        // Text(
-                                        //                     '${cartController.usercartdata![index].quantity}',
-                                        //                     style:
-                                        //                         new TextStyle(
-                                        //                             fontSize:
-                                        //                                 20.0)),
-                                        Container(
-                                          height: 20,
-                                          child: new FloatingActionButton(
-                                            onPressed: () {
-                                              // Database().addLike(widget.id!,
-                                              //     item[index].get('price'), widget.total!);
-                                            },
-                                            child: Icon(
-                                              Icons.add,
-                                              size: 20,
-                                              color: Colors.black,
-                                            ),
-                                            backgroundColor: Colors.white,
-                                          ),
-                                        ),
-                                      ],
+                              ? InkWell(
+                                  onTap: () {
+                                    try {
+                                      // totalPrice = widget.price! * _n;
+                                      Database().addCart(
+                                          productController
+                                              .dataGetter![index].id!,
+                                          1,
+                                          productController
+                                              .dataGetter![index].fprice!,
+                                          productController
+                                              .dataGetter![index].fimage!,
+                                          productController
+                                              .dataGetter![index].ftitle!,
+                                          productController
+                                              .dataGetter![index].fdec!);
+
+                                      Get.snackbar(
+                                          "${productController.dataGetter![index].ftitle} Add in Cart",
+                                          "Cheak in Cart",
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          backgroundColor: Colors.green,
+                                          colorText: Colors.white);
+                                    } catch (e) {
+                                      Get.snackbar(
+                                          "${productController.dataGetter![index].ftitle} Not Added",
+                                          e.toString(),
+                                          snackPosition: SnackPosition.BOTTOM);
+                                    }
+                                  },
+                                  child: InkWell(
+                                    onTap: () {
+                                      Database().removeCart(productController
+                                          .dataGetter![index].id!);
+                                    },
+                                    child: Container(
+                                      width: 40,
+                                      margin: EdgeInsets.all(5),
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.red),
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                      ),
+                                      child: Text(
+                                        'Delete to Cart',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red),
+                                      ),
                                     ),
-                                  ],
-                                )
-                              : Container(
-                                  width: 40,
-                                  margin: EdgeInsets.all(5),
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.red,
                                   ),
-                                  child: Text(
-                                    'Add to Cart',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                                )
+                              // ? Column(
+                              //     children: [
+                              //       Divider(),
+                              //       Row(
+                              //         mainAxisAlignment: MainAxisAlignment.center,
+                              //         children: [
+                              //           Container(
+                              //             height: 20,
+                              //             child: new FloatingActionButton(
+                              //               onPressed: () {
+                              //                 // Database().removeLike(widget.id!,
+                              //                 //    item[index].get('price'), widget.total!);
+                              //               },
+                              //               child: new Icon(
+                              //                 Icons.remove,
+                              //                 size: 20,
+                              //                 color: Colors.black,
+                              //               ),
+                              //               backgroundColor: Colors.white,
+                              //             ),
+                              //           ),
+                              //           // Text(
+                              //           //                     '${cartController.usercartdata![index].quantity}',
+                              //           //                     style:
+                              //           //                         new TextStyle(
+                              //           //                             fontSize:
+                              //           //                                 20.0)),
+                              //           Container(
+                              //             height: 20,
+                              //             child: new FloatingActionButton(
+                              //               onPressed: () {
+                              //                 // Database().addLike(widget.id!,
+                              //                 //     item[index].get('price'), widget.total!);
+                              //               },
+                              //               child: Icon(
+                              //                 Icons.add,
+                              //                 size: 20,
+                              //                 color: Colors.black,
+                              //               ),
+                              //               backgroundColor: Colors.white,
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ],
+                              //   )
+                              : InkWell(
+                                  onTap: () {
+                                    try {
+                                      // totalPrice = widget.price! * _n;
+                                      Database().addCart(
+                                          productController
+                                              .dataGetter![index].id!,
+                                          1,
+                                          productController
+                                              .dataGetter![index].fprice!,
+                                          productController
+                                              .dataGetter![index].fimage!,
+                                          productController
+                                              .dataGetter![index].ftitle!,
+                                          productController
+                                              .dataGetter![index].fdec!);
+
+                                      Get.snackbar(
+                                          "${productController.dataGetter![index].ftitle} Add in Cart",
+                                          "Cheak in Cart",
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          backgroundColor: Colors.green,
+                                          duration: Duration(
+                                              seconds: 1, milliseconds: 500),
+                                          colorText: Colors.white);
+                                    } catch (e) {
+                                      Get.snackbar(
+                                          "${productController.dataGetter![index].ftitle} Not Added",
+                                          e.toString(),
+                                          snackPosition: SnackPosition.BOTTOM);
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 40,
+                                    margin: EdgeInsets.all(5),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.red,
+                                    ),
+                                    child: Text(
+                                      'Add to Cart',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                 );
                         }),

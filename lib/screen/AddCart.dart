@@ -15,7 +15,7 @@ class AddCart extends StatefulWidget {
 }
 
 class _AddCartState extends State<AddCart> {
-  String userId=FirebaseAuth.instance.currentUser!.uid;
+  String userId = FirebaseAuth.instance.currentUser!.uid;
   int? sum = 0;
   int? total = 0;
   RxBool orderStatus = false.obs;
@@ -25,8 +25,8 @@ class _AddCartState extends State<AddCart> {
     price();
     cheak();
   }
-cheak(){
-   
+
+  cheak() {
     return FirebaseFirestore.instance
         .collection('user')
         .doc(userId)
@@ -35,20 +35,20 @@ cheak(){
         .then(
       (querySnapshot) {
         querySnapshot.docs.forEach((result) {
-          if(result.data()['status']!='Pending'){
-orderStatus.value=false;
-
+          if (result.data()['status'] == 'Pending' ||
+              result.data()['status'] == 'Preparing') {
+            orderStatus.value = true;
+          } else {
+            orderStatus.value = false;
           }
-        else{
-            orderStatus.value=true;
-        }
         });
         // setState(() {
         //   total = sum;
         // });
       },
     );
-}
+  }
+
   Future<void> price() {
     sum = 0;
     total = 0;
@@ -74,7 +74,7 @@ orderStatus.value=false;
   String? category;
 
   int? quantity;
-String?status;
+  String? status;
   int? totalprice;
 
   final db = FirebaseFirestore.instance;
@@ -160,7 +160,11 @@ String?status;
                 ),
               ),
               StreamBuilder<QuerySnapshot>(
-                stream: db.collection('user').doc(userId).collection("PendingOrder").snapshots(),
+                stream: db
+                    .collection('user')
+                    .doc(userId)
+                    .collection("PendingOrder")
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var item = snapshot.data!.docs;
@@ -171,13 +175,12 @@ String?status;
                         shrinkWrap: true,
                         itemCount: item.length,
                         itemBuilder: (context, index) {
-                          
                           id = item[index].get('ProductId');
                           category = item[index].get('category');
                           quantity = item[index].get('quantity');
                           totalprice = item[index].get('totalprice');
-                          status=item[index].get('status');
-                       
+                          status = item[index].get('status');
+
                           return Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -201,46 +204,51 @@ String?status;
                 },
               ),
               // Text('$status'),
-              orderStatus.value?Text(''):  InkWell(
-                onTap: () async {
-                  await Database().order();
-                  Database().statusCahnge();
-                 
-                  Get.off(()=>OrderPlace(),binding: OrderStatusBinding());
-                },
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                  width: 200,
-                  margin: EdgeInsets.all(20),
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      gradient: LinearGradient(
-                        colors: [Colors.yellow, Colors.orange],
+              orderStatus.value
+                  ? Container()
+                  : InkWell(
+                      onTap: () async {
+                        if(id!=null)
+                        await Database().order();
+                        Database().statusCahnge();
+
+                        Get.off(() => OrderPlace(),
+                            binding: OrderStatusBinding());
+                            
+                      },
+                      child: Container(
+                        alignment: Alignment.bottomCenter,
+                        width: 200,
+                        margin: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: LinearGradient(
+                              colors: [Colors.yellow, Colors.orange],
+                            ),
+                            boxShadow: [
+                              BoxShadow(blurRadius: 5.0, color: Colors.grey)
+                            ]),
+                        child: Row(
+                          children: <Widget>[
+                            Spacer(),
+                            Text(
+                              "Order Now",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 21),
+                            ),
+                            Spacer(),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Colors.white,
+                            )
+                          ],
+                        ),
                       ),
-                      boxShadow: [
-                        BoxShadow(blurRadius: 5.0, color: Colors.grey)
-                      ]),
-                  child: Row(
-                    children: <Widget>[
-                      Spacer(),
-                      Text(
-                        "Order Now",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 21),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                      )
-                    ],
-                  ),
-                ),
-              ),
+                    ),
             ],
           ),
         ));
