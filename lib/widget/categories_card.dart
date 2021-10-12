@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:resturant_ui/Binding/all_binding.dart';
-import 'package:resturant_ui/controller/UserCart_Controller.dart';
-import 'package:resturant_ui/controller/cart_controller.dart';
 import 'package:resturant_ui/controller/category_controller.dart';
 import 'package:resturant_ui/controller/product_Controller.dart';
-import 'package:resturant_ui/screen/category.dart';
 import 'package:resturant_ui/utils/global_variable.dart';
 import 'package:resturant_ui/widget/product_card.dart';
 
+// ignore: must_be_immutable
 class CategoriesCard extends StatelessWidget {
   Color buttonDefualtColor = Colors.white;
   var curruntID = ''.obs;

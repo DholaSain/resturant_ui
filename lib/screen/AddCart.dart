@@ -8,7 +8,6 @@ import 'package:resturant_ui/screen/Product_details.dart';
 import 'package:resturant_ui/screen/orderPlace.dart';
 import 'package:resturant_ui/service/database.dart';
 import 'package:resturant_ui/widget/AddtoCartCard.dart';
-import 'package:resturant_ui/screen/product_detail.dart';
 
 class AddCart extends StatefulWidget {
   @override

@@ -2,14 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:resturant_ui/controller/resturent_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:resturant_ui/screen/home.dart';
 import 'package:resturant_ui/service/database.dart';
 import '../controller/UserCart_Controller.dart';
-import 'dart:ui' as ui;
 
 class OrderSlip extends StatefulWidget {
   @override

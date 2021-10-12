@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:resturant_ui/screen/Product_details.dart';
-import 'package:resturant_ui/widget/categoryCard.dart';
 import 'package:resturant_ui/widget/product_card.dart';
 
+// ignore: must_be_immutable
 class CategoryPage extends StatelessWidget {
 CategoryPage(this.category);
 String? category;

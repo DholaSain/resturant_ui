@@ -2,10 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:resturant_ui/controller/cart_controller.dart';
-import 'package:resturant_ui/screen/Product_details.dart';
 import 'package:resturant_ui/service/database.dart';
 
+// ignore: must_be_immutable
 class AddtoCartCard extends StatefulWidget {
   AddtoCartCard({this.price, this.total, this.name, this.status,this.id});
   String? id;

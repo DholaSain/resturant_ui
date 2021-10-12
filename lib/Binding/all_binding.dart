@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 import 'package:resturant_ui/controller/UserCart_Controller.dart';
 import 'package:resturant_ui/controller/auth_controller.dart';
-import 'package:resturant_ui/controller/cart_controller.dart';
-import 'package:resturant_ui/controller/orderStatus_Controller.dart';
 import 'package:resturant_ui/controller/product_Controller.dart';
 
 class ProductsBinding implements Bindings {

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
-import 'package:resturant_ui/controller/orderStatus_Controller.dart';
 import 'package:resturant_ui/controller/resturent_controller.dart';
 import 'package:resturant_ui/screen/AddCart.dart';
 import 'package:resturant_ui/widget/bottomnavbar.dart';

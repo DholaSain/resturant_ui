@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:resturant_ui/service/database.dart';
 
+// ignore: must_be_immutable
 class RestaurantPage extends StatefulWidget {
   String? title;
   String? id;

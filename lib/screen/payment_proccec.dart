@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:resturant_ui/Binding/all_binding.dart';
 import 'package:resturant_ui/controller/orderStatus_Controller.dart';
-import 'package:resturant_ui/screen/home.dart';
 import 'package:resturant_ui/screen/orderSlip.dart';
 
 class PaymentProcess extends StatelessWidget {

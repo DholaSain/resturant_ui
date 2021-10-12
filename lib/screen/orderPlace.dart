@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:resturant_ui/controller/orderStatus_Controller.dart';
 import 'package:resturant_ui/screen/payment_method.dart';
-import 'package:resturant_ui/screen/payment_proccec.dart';
-import 'package:resturant_ui/utils/global_variable.dart';
 
 // ignore: must_be_immutable
 class OrderPlace extends StatelessWidget {

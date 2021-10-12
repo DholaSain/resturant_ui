@@ -17,6 +17,7 @@ class AuthController extends GetxController {
 //     Get.lazyPut<AuthController>(() => AuthController());
 //   }
 
+  // ignore: must_call_super
   onInit() {
     _firebaseUser.bindStream(_auth.authStateChanges());
   }

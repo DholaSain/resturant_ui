@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:resturant_ui/screen/Product_details.dart';
-import 'package:resturant_ui/screen/product_detail.dart';
 
 class CategoryCard extends StatefulWidget {
   @override
@@ -15,10 +12,8 @@ class _CategoryCardState extends State<CategoryCard> {
         onTap: () {
           // Get.to(RecipiesCard());
         },
-        child: Container(
-          
+        child: Container(  
           height: 200,
-          
           decoration: BoxDecoration(
             color: Color(0xffffC069),
             borderRadius: BorderRadius.all(
@@ -32,12 +27,9 @@ class _CategoryCardState extends State<CategoryCard> {
             children: <Widget>[
               Expanded(
                 child: Container(
-                 
-                  decoration: BoxDecoration(
-                    
+                  decoration: BoxDecoration( 
                     borderRadius: BorderRadius.all(Radius.circular(18.0)),
                     // image: DecorationImage(
-                    
                     //     image: AssetImage(
                     //       'assets/imgs/burger.png',
                     //     ),

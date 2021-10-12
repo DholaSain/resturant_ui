@@ -1,6 +1,5 @@
 
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:resturant_ui/tempview.dart';
 
@@ -13,7 +12,7 @@ class DynamicLinkService {
     if (deepLink != null && deepLink.queryParameters != null) {
       var isProfile = deepLink.pathSegments.contains('post');
       if (isProfile) {
-        var title = await deepLink.queryParameters['title'];
+        var title = deepLink.queryParameters['title'];
         print("init $title");
 
         if (title != null) {
@@ -30,7 +29,7 @@ class DynamicLinkService {
       if (deepLink != null && deepLink.queryParameters != null) {
         var isProfile = deepLink.pathSegments.contains('post');
         if (isProfile) {
-          var userName = await deepLink.queryParameters['title'];
+          var userName = deepLink.queryParameters['title'];
           print("onlink $userName");
 
           if (userName != null) {

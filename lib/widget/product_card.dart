@@ -1,15 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:resturant_ui/controller/UserCart_Controller.dart';
 import 'package:resturant_ui/controller/product_Controller.dart';
 import 'package:resturant_ui/screen/Product_details.dart';
-import 'package:resturant_ui/service/database.dart';
-import 'package:resturant_ui/utils/global_variable.dart';
-
 const defaultPadding = 16.0;
+// ignore: must_be_immutable
 class ProductsCard extends StatelessWidget {
   int? index;
   final uid = FirebaseAuth.instance.currentUser!.uid;
@@ -19,7 +15,6 @@ class ProductsCard extends StatelessWidget {
   final productController = Get.find<ProductController>();
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Obx(() {
       if (productController.dataGetter == null) {
         return CircularProgressIndicator();
@@ -120,8 +115,7 @@ class ProductsCard extends StatelessWidget {
                                   children: [
                                     Divider(),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Container(
                                           height: 20,
@@ -138,12 +132,12 @@ class ProductsCard extends StatelessWidget {
                                             backgroundColor: Colors.white,
                                           ),
                                         ),
-                                        Text(
-                                                            '${cartController.usercartdata![index].quantity}',
-                                                            style:
-                                                                new TextStyle(
-                                                                    fontSize:
-                                                                        20.0)),
+                                        // Text(
+                                        //                     '${cartController.usercartdata![index].quantity}',
+                                        //                     style:
+                                        //                         new TextStyle(
+                                        //                             fontSize:
+                                        //                                 20.0)),
                                         Container(
                                           height: 20,
                                           child: new FloatingActionButton(
