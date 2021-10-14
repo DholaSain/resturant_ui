@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,7 @@ const defaultPadding = 16.0;
 
 // ignore: must_be_immutable
 class ProductsCard extends StatelessWidget {
-  int? index;
+  int? quantity = 0;
   final uid = FirebaseAuth.instance.currentUser!.uid;
 
   Color buttonDefualtColor = Colors.white;
@@ -33,6 +34,30 @@ class ProductsCard extends StatelessWidget {
               childAspectRatio: 1 / 1.5,
             ),
             itemBuilder: (context, index) {
+              //  FutureBuilder<DocumentSnapshot>(
+              //                             future: FirebaseFirestore.instance
+              //                                 .collection('user')
+              //                                 .doc(uid)
+              //                                 .collection('PendingOrder')
+              //                                 .doc(productController
+              //                                     .dataGetter![index].id)
+              //                                 .get(),
+              //                             builder: (context,
+              //                                 AsyncSnapshot<DocumentSnapshot>
+              //                                     snapshot) {
+              //                               if (snapshot.hasError)
+              //                                 return Center(
+              //                                   child: Text(snapshot.hasError
+              //                                       .toString()),
+              //                                 );
+              //                               if (snapshot.hasData) {
+              //                                 return quantity=
+              //                                       snapshot.data!['quantity'];
+              //                               } else {
+              //                                 return Container();
+              //                               }
+              //                             },
+              //                           );
               return GestureDetector(
                   onTap: () {
                     Get.to(RestaurantPage(
@@ -114,107 +139,151 @@ class ProductsCard extends StatelessWidget {
                           return cartController.usercartdata!.any((element) =>
                                   element.id!.contains(
                                       '${productController.dataGetter![index].id}'))
-                              ? InkWell(
-                                  onTap: () {
-                                    try {
-                                      // totalPrice = widget.price! * _n;
-                                      Database().addCart(
-                                          productController
-                                              .dataGetter![index].id!,
-                                          1,
-                                          productController
-                                              .dataGetter![index].fprice!,
-                                          productController
-                                              .dataGetter![index].fimage!,
-                                          productController
-                                              .dataGetter![index].ftitle!,
-                                          productController
-                                              .dataGetter![index].fdec!);
+                              // ? InkWell(
+                              //     onTap: () {
+                              //       try {
+                              //         // totalPrice = widget.price! * _n;
+                              //         Database().addCart(
+                              //             productController
+                              //                 .dataGetter![index].id!,
+                              //             1,
+                              //             productController
+                              //                 .dataGetter![index].fprice!,
+                              //             productController
+                              //                 .dataGetter![index].fimage!,
+                              //             productController
+                              //                 .dataGetter![index].ftitle!,
+                              //             productController
+                              //                 .dataGetter![index].fdec!);
 
-                                      Get.snackbar(
-                                          "${productController.dataGetter![index].ftitle} Add in Cart",
-                                          "Cheak in Cart",
-                                          snackPosition: SnackPosition.BOTTOM,
-                                          backgroundColor: Colors.green,
-                                          colorText: Colors.white);
-                                    } catch (e) {
-                                      Get.snackbar(
-                                          "${productController.dataGetter![index].ftitle} Not Added",
-                                          e.toString(),
-                                          snackPosition: SnackPosition.BOTTOM);
-                                    }
-                                  },
-                                  child: InkWell(
-                                    onTap: () {
-                                      Database().removeCart(productController
-                                          .dataGetter![index].id!);
-                                    },
-                                    child: Container(
-                                      width: 40,
-                                      margin: EdgeInsets.all(5),
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.red),
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.white,
-                                      ),
-                                      child: Text(
-                                        'Delete to Cart',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.red),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              // ? Column(
-                              //     children: [
-                              //       Divider(),
-                              //       Row(
-                              //         mainAxisAlignment: MainAxisAlignment.center,
-                              //         children: [
-                              //           Container(
-                              //             height: 20,
-                              //             child: new FloatingActionButton(
-                              //               onPressed: () {
-                              //                 // Database().removeLike(widget.id!,
-                              //                 //    item[index].get('price'), widget.total!);
-                              //               },
-                              //               child: new Icon(
-                              //                 Icons.remove,
-                              //                 size: 20,
-                              //                 color: Colors.black,
-                              //               ),
-                              //               backgroundColor: Colors.white,
-                              //             ),
-                              //           ),
-                              //           // Text(
-                              //           //                     '${cartController.usercartdata![index].quantity}',
-                              //           //                     style:
-                              //           //                         new TextStyle(
-                              //           //                             fontSize:
-                              //           //                                 20.0)),
-                              //           Container(
-                              //             height: 20,
-                              //             child: new FloatingActionButton(
-                              //               onPressed: () {
-                              //                 // Database().addLike(widget.id!,
-                              //                 //     item[index].get('price'), widget.total!);
-                              //               },
-                              //               child: Icon(
-                              //                 Icons.add,
-                              //                 size: 20,
-                              //                 color: Colors.black,
-                              //               ),
-                              //               backgroundColor: Colors.white,
-                              //             ),
-                              //           ),
-                              //         ],
+                              //         Get.snackbar(
+                              //             "${productController.dataGetter![index].ftitle} Add in Cart",
+                              //             "Cheak in Cart",
+                              //             snackPosition: SnackPosition.BOTTOM,
+                              //             backgroundColor: Colors.green,
+                              //             colorText: Colors.white);
+                              //       } catch (e) {
+                              //         Get.snackbar(
+                              //             "${productController.dataGetter![index].ftitle} Not Added",
+                              //             e.toString(),
+                              //             snackPosition: SnackPosition.BOTTOM);
+                              //       }
+                              //     },
+                              //     child: InkWell(
+                              //       onTap: () {
+                              //         Database().removeCart(productController
+                              //             .dataGetter![index].id!);
+                              //       },
+                              //       child: Container(
+                              //         width: 40,
+                              //         margin: EdgeInsets.all(5),
+                              //         padding: EdgeInsets.all(5),
+                              //         decoration: BoxDecoration(
+                              //           border: Border.all(color: Colors.red),
+                              //           borderRadius: BorderRadius.circular(10),
+                              //           color: Colors.white,
+                              //         ),
+                              //         child: Text(
+                              //           'Delete to Cart',
+                              //           textAlign: TextAlign.center,
+                              //           style: TextStyle(
+                              //               fontSize: 18,
+                              //               fontWeight: FontWeight.bold,
+                              //               color: Colors.red),
+                              //         ),
                               //       ),
-                              //     ],
+                              //     ),
                               //   )
+                              ? Column(
+                                  children: [
+                                    Divider(),
+                                    FutureBuilder<DocumentSnapshot>(
+                                      future: FirebaseFirestore.instance
+                                          .collection('user')
+                                          .doc(uid)
+                                          .collection('PendingOrder')
+                                          .doc(productController
+                                              .dataGetter![index].id)
+                                          .get(),
+                                      builder: (context,
+                                          AsyncSnapshot<DocumentSnapshot>
+                                              snapshot) {
+                                        if (snapshot.hasError)
+                                          return Center(
+                                            child: Text(
+                                                snapshot.hasError.toString()),
+                                          );
+                                        return snapshot.hasData
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    height: 20,
+                                                    child:
+                                                        new FloatingActionButton(
+                                                      onPressed: () {
+                                                        Database().removeLike(
+                                                            productController
+                                                                .dataGetter![
+                                                                    index]
+                                                                .id!,
+                                                            productController
+                                                                .dataGetter![
+                                                                    index]
+                                                                .fprice!,
+                                                            snapshot.data![
+                                                                'quantity']!);
+                                                      },
+                                                      child: new Icon(
+                                                        Icons.remove,
+                                                        size: 20,
+                                                        color: Colors.black,
+                                                      ),
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "${snapshot.data!['quantity']}",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Container(
+                                                    height: 20,
+                                                    child:
+                                                        new FloatingActionButton(
+                                                      onPressed: () {
+                                                        Database().addLike(
+                                                            productController
+                                                                .dataGetter![
+                                                                    index]
+                                                                .id!,
+                                                            productController
+                                                                .dataGetter![
+                                                                    index]
+                                                                .fprice!,
+                                                            snapshot.data![
+                                                                'quantity']!);
+                                                      },
+                                                      child: Icon(
+                                                        Icons.add,
+                                                        size: 20,
+                                                        color: Colors.black,
+                                                      ),
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : Container();
+                                      },
+                                    ),
+                                  ],
+                                )
                               : InkWell(
                                   onTap: () {
                                     try {
