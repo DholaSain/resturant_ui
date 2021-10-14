@@ -16,9 +16,10 @@ void main() async {
   await Firebase.initializeApp();
   Get.lazyPut<AuthController>(() => AuthController());
   Get.lazyPut<UserController>(() => UserController());
-  Get.lazyPut<ResturentController>(() => ResturentController());
-  Get.lazyPut<UserCartController>(() => UserCartController());
-  Get.lazyPut<CategoryController>(() => CategoryController());
+  Get.put<ResturentController>(ResturentController());
+  Get.put<UserCartController>(UserCartController());
+
+  Get.put<CategoryController>(CategoryController());
     // Get.put(OrderStatusController());
   Get.lazyPut<OrderStatusController>(() => OrderStatusController());
     DynamicLinkService().handleDynamicLinks();

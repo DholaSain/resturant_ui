@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:resturant_ui/controller/UserCart_Controller.dart';
 import 'package:resturant_ui/controller/category_controller.dart';
 import 'package:resturant_ui/controller/product_Controller.dart';
 import 'package:resturant_ui/utils/global_variable.dart';
@@ -41,6 +42,7 @@ class CategoriesCard extends StatelessWidget {
                       }
                       debugPrint(categoryName.value);
                       Get.put(ProductController()).onInit();
+                      // Get.put(UserCartController()).onInit();
                     
                       
                     },
