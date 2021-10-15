@@ -59,6 +59,7 @@ Stream<List<OrderStatusModel>> orderStatus()  {
       rethrow;
     }
   }
+  
   Future<void> addCart(String id, int quantity, int price, String image,
       String title, String dec) async {
     try {

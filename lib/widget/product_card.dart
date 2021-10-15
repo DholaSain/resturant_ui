@@ -17,6 +17,43 @@ class ProductsCard extends StatelessWidget {
   Color buttonDefualtColor = Colors.white;
   final cartController = Get.find<UserCartController>();
   final productController = Get.find<ProductController>();
+  counterButton(String id,int price,int quantity){
+    
+      if(quantity==1){
+     return  FloatingActionButton(
+                                                      onPressed: () {
+                                                        Database().removeCart(id);
+                                                      },
+                                                      child: new Icon(
+                                                        Icons.delete_outline,
+                                                        size: 20,
+                                                        color: Colors.red,
+                                                      ),
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                    );
+    }
+    else{
+ return FloatingActionButton(
+                                                      onPressed: () {
+                                                        Database().removeLike(
+                                                            id,
+                                                           price,
+                                                           quantity);
+                                                      },
+                                                      child: new Icon(
+                                                        Icons.remove,
+                                                        size: 20,
+                                                        color: Colors.black,
+                                                      ),
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                    );
+    }
+    
+    
+    
+  }
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -219,12 +256,9 @@ class ProductsCard extends StatelessWidget {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Container(
-                                                    height: 20,
-                                                    child:
-                                                        new FloatingActionButton(
-                                                      onPressed: () {
-                                                        Database().removeLike(
-                                                            productController
+                                                    height: 30,
+                                                    child:Obx(() => counterButton(
+                                                        productController
                                                                 .dataGetter![
                                                                     index]
                                                                 .id!,
@@ -233,16 +267,30 @@ class ProductsCard extends StatelessWidget {
                                                                     index]
                                                                 .fprice!,
                                                             snapshot.data![
-                                                                'quantity']!);
-                                                      },
-                                                      child: new Icon(
-                                                        Icons.remove,
-                                                        size: 20,
-                                                        color: Colors.black,
-                                                      ),
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                    ),
+                                                                'quantity']!
+                                                    ),) 
+                                                    //      FloatingActionButton(
+                                                    //   onPressed: () {
+                                                    //     Database().removeLike(
+                                                    //         productController
+                                                    //             .dataGetter![
+                                                    //                 index]
+                                                    //             .id!,
+                                                    //         productController
+                                                    //             .dataGetter![
+                                                    //                 index]
+                                                    //             .fprice!,
+                                                    //         snapshot.data![
+                                                    //             'quantity']!);
+                                                    //   },
+                                                    //   child: new Icon(
+                                                    //     Icons.remove,
+                                                    //     size: 20,
+                                                    //     color: Colors.black,
+                                                    //   ),
+                                                    //   backgroundColor:
+                                                    //       Colors.white,
+                                                    // ),
                                                   ),
                                                   Text(
                                                     "${snapshot.data!['quantity']}",
@@ -252,7 +300,7 @@ class ProductsCard extends StatelessWidget {
                                                             FontWeight.bold),
                                                   ),
                                                   Container(
-                                                    height: 20,
+                                                    height: 30,
                                                     child:
                                                         new FloatingActionButton(
                                                       onPressed: () {

@@ -130,6 +130,5 @@ class CategoriesCard extends StatelessWidget {
         );
       }
     });
-
   }
 }

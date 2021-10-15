@@ -9,18 +9,21 @@ class ProductsBinding implements Bindings {
     Get.lazyPut<ProductController>(() => ProductController());
   }
 }
+
 class AuthBinding extends Bindings {
   @override  
   void dependencies() {
     Get.put<AuthController>(AuthController(), permanent: true);
       }    
 }
+
 class OrderStatusBinding extends Bindings {
   @override  
   void dependencies() {
     Get.lazyPut<ProductController>(() => ProductController());
       }  
 }
+
 class UserCartBinding implements Bindings {
   @override
   void dependencies() {
