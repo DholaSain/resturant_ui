@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:resturant_ui/Binding/all_binding.dart';
 import 'package:resturant_ui/screen/Product_details.dart';
 import 'package:resturant_ui/screen/orderPlace.dart';
+import 'package:resturant_ui/screen/payment_method.dart';
 import 'package:resturant_ui/service/database.dart';
 import 'package:resturant_ui/widget/AddtoCartCard.dart';
 
@@ -15,6 +16,7 @@ class AddCart extends StatefulWidget {
 }
 
 class _AddCartState extends State<AddCart> {
+   String radioItem = '';
   String userId = FirebaseAuth.instance.currentUser!.uid;
   int? sum = 0;
   int? total = 0;
@@ -36,7 +38,7 @@ class _AddCartState extends State<AddCart> {
       (querySnapshot) {
         querySnapshot.docs.forEach((result) {
           if (result.data()['status'] == 'Pending' ||
-              result.data()['status'] == 'Preparing') {
+              result.data()['status'] == 'Preparing'||result.data()['status'] == 'Done') {
             orderStatus.value = true;
           } else {
             orderStatus.value = false;
@@ -89,7 +91,7 @@ class _AddCartState extends State<AddCart> {
             decoration: BoxDecoration(
               gradient: LinearGradient(colors: [
                 Colors.orange,
-                Colors.yellow,
+                Colors.orange,
               ]),
               color: Colors.white,
               boxShadow: [
@@ -180,7 +182,6 @@ class _AddCartState extends State<AddCart> {
                           quantity = item[index].get('quantity');
                           totalprice = item[index].get('totalprice');
                           status = item[index].get('status');
-
                           return Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -203,18 +204,52 @@ class _AddCartState extends State<AddCart> {
                   }
                 },
               ),
+              SizedBox(height: 30,),
+        Column(
+        children: <Widget>[
+ 
+          RadioListTile(
+              groupValue: radioItem,
+              title: Text('Dining'),
+              value: 'Dining',
+              onChanged: (String ?val) {
+                setState(() {
+                  radioItem = val!;
+                });
+              },
+            ),
+ 
+           RadioListTile(
+              groupValue: radioItem,
+              title: Text('Takeaway'),
+              value: 'Takeaway',
+              onChanged: (String?val) {
+                setState(() {
+                  radioItem = val!;
+                });
+              },
+            ),
+ 
+          //  Text('$radioItem', style: TextStyle(fontSize: 23),)
+          
+        ],
+    ),
               // Text('$status'),
               orderStatus.value
                   ? Container()
                   : InkWell(
                       onTap: () async {
-                        if(id!=null)
-                        await Database().order();
-                        Database().statusCahnge();
-
+                        // ignore: unnecessary_null_comparison
+                        if(id!=null&&radioItem!=null){
+                        await Database().order(radioItem);
+                        // Database().statusCahnge();
+if(radioItem=='Takeaway'){
+Get.off(()=>PymentMethod());
+}
+else
                         Get.off(() => OrderPlace(),
                             binding: OrderStatusBinding());
-                            
+                        }  
                       },
                       child: Container(
                         alignment: Alignment.bottomCenter,

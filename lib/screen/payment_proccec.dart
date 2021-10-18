@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:resturant_ui/Binding/all_binding.dart';
 import 'package:resturant_ui/controller/orderStatus_Controller.dart';
+import 'package:resturant_ui/screen/orderPlace.dart';
 import 'package:resturant_ui/screen/orderSlip.dart';
 
 class PaymentProcess extends StatelessWidget {
@@ -14,7 +15,7 @@ class PaymentProcess extends StatelessWidget {
     return Obx(() {
       if (statusController.status == null) {
         return CircularProgressIndicator();
-      } else if (statusController.status!.status == 'Done') {
+      } else if (statusController.status!.status == 'Done'||statusController.status!.status == 'Payment') {
         // ignore: unused_element
         return Scaffold(
           body: Center(
@@ -37,7 +38,12 @@ class PaymentProcess extends StatelessWidget {
       } else if (statusController.status!.status == 'Complete') {
           // ignore: unused_element
          return Compelet();
-      } else {
+         
+      } 
+      else if(statusController.status!.status == 'Preparing'){
+     return  OrderPlace();
+      }
+      else {
         return CircularProgressIndicator();
       }
     });

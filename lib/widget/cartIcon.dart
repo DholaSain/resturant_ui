@@ -30,7 +30,7 @@ class CartIcon extends StatelessWidget {
                               icon: new Icon(
                                 Icons.shopping_cart,
                                 size: 30,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                               onPressed: null,
                             ),

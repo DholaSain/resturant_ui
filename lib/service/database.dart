@@ -264,7 +264,7 @@ _firestore.collection('user').doc(userId).collection("PendingOrder").doc(product
     );
   }
 
-  Future<void> order() async {
+  Future<void> order(String order) async {
     var l;
     String? name;
     late int number = 0;
@@ -321,10 +321,21 @@ _firestore.collection('user').doc(userId).collection("PendingOrder").doc(product
           });
         });
       });
-      _firestore.collection('user').doc(userId).collection("orderStatus").doc("orderStatus").set({
+      if(order=='Takeaway'){
+ _firestore.collection('user').doc(userId).collection("orderStatus").doc("orderStatus").set({
   'orderId':l,
-  'status':"Pending"
+  'status':"Payment",
+  'order':order,
       });
+      }
+      else{
+        _firestore.collection('user').doc(userId).collection("orderStatus").doc("orderStatus").set({
+  'orderId':l,
+  'status':"Pending",
+  'order':order,
+      });
+      }
+      
       
     } catch (e) {
       Get.snackbar("", e.toString(), snackPosition: SnackPosition.BOTTOM);

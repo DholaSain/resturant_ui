@@ -14,6 +14,16 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
       Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.orange,
+          actions: [
+            Container(child: CartIcon()),
+          ],
+          title:   Obx(() => Text("${resturent.resturentGetter!.name}",style: TextStyle(
+                            fontSize: 20,fontWeight: FontWeight.bold,
+                          ),)),
+         
+        ),
         bottomNavigationBar: BottomNavbar(),
         backgroundColor: Colors.white,
         body: Container(
@@ -25,35 +35,35 @@ class Home extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Obx(() => Text("${resturent.resturentGetter!.name}",style: TextStyle(
-                            fontSize: 20,fontWeight: FontWeight.bold,
-                          ),)),
-                          Text(
-                            "What would you like to EAT ?",
-                            style: TextStyle(
-                              color: Colors.grey,
-                                fontWeight: FontWeight.bold, fontSize: 17),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 60,
-                        width: 60,
-                        child: CircleAvatar(
-                          backgroundImage:
-                              AssetImage("assets/imgs/profile.jpg"),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: <Widget>[
+                //       Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: <Widget>[
+                //           Obx(() => Text("${resturent.resturentGetter!.name}",style: TextStyle(
+                //             fontSize: 20,fontWeight: FontWeight.bold,
+                //           ),)),
+                //           Text(
+                //             "What would you like to EAT ?",
+                //             style: TextStyle(
+                //               color: Colors.grey,
+                //                 fontWeight: FontWeight.bold, fontSize: 17),
+                //           ),
+                //         ],
+                //       ),
+                //       Container(
+                //         height: 60,
+                //         width: 60,
+                //         child: CircleAvatar(
+                //           backgroundImage:
+                //               AssetImage("assets/imgs/profile.jpg"),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 // SizedBox(
                 //   height: 11.0,
                 // ),
@@ -70,11 +80,11 @@ class Home extends StatelessWidget {
                   height: 50,
                   width: 150,
                   decoration: BoxDecoration(
+                    
                     // border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(21.0),
-                    gradient: LinearGradient(
-                        colors: [Colors.yellow, Colors.orange]),
-                    color: Colors.white,
+                    
+                    color: Colors.orange,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey,
@@ -116,20 +126,20 @@ class Home extends StatelessWidget {
           ),
         ),
       ),
-      Positioned(
-        bottom: 20,
-        right: 15,
-        child: Container(
-          height: 70,
-          width: 70,
-          child: FloatingActionButton(
-              backgroundColor: Colors.white,
-              onPressed: () {
-                Get.to(AddCart());
-              },
-              child: CartIcon()),
-        ),
-      )
+      // Positioned(
+      //   bottom: 20,
+      //   right: 15,
+      //   child: Container(
+      //     height: 70,
+      //     width: 70,
+      //     child: FloatingActionButton(
+      //         backgroundColor: Colors.white,
+      //         onPressed: () {
+      //           Get.to(AddCart());
+      //         },
+      //         child: CartIcon()),
+      //   ),
+      // )
     ]);
   }
 }

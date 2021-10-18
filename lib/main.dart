@@ -18,7 +18,6 @@ void main() async {
   Get.lazyPut<UserController>(() => UserController());
   Get.put<ResturentController>(ResturentController());
   Get.put<UserCartController>(UserCartController());
-
   Get.put<CategoryController>(CategoryController());
     // Get.put(OrderStatusController());
   Get.lazyPut<OrderStatusController>(() => OrderStatusController());
@@ -62,7 +61,6 @@ final Rxn<String> link = Rxn<String>();
           Obx(() => Text(link.value ?? 'link here')),
           TextFormField(
             controller: uid,
-            
           ),
           MaterialButton(onPressed: () async{
           link.value = await AppUtils.buildDynamicLink(uid.text);
