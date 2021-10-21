@@ -14,7 +14,6 @@ class CartIcon extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var item = snapshot.data!.docs;
-
               return Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: new Container(

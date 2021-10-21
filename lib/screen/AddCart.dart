@@ -16,7 +16,7 @@ class AddCart extends StatefulWidget {
 }
 
 class _AddCartState extends State<AddCart> {
-   String radioItem = '';
+  String radioItem = '';
   String userId = FirebaseAuth.instance.currentUser!.uid;
   int? sum = 0;
   int? total = 0;
@@ -38,7 +38,8 @@ class _AddCartState extends State<AddCart> {
       (querySnapshot) {
         querySnapshot.docs.forEach((result) {
           if (result.data()['status'] == 'Pending' ||
-              result.data()['status'] == 'Preparing'||result.data()['status'] == 'Done') {
+              result.data()['status'] == 'Preparing' ||
+              result.data()['status'] == 'Done') {
             orderStatus.value = true;
           } else {
             orderStatus.value = false;
@@ -170,7 +171,6 @@ class _AddCartState extends State<AddCart> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var item = snapshot.data!.docs;
-
                     return ListView.builder(
                         physics: BouncingScrollPhysics(),
                         scrollDirection: Axis.vertical,
@@ -204,52 +204,52 @@ class _AddCartState extends State<AddCart> {
                   }
                 },
               ),
-              SizedBox(height: 30,),
-        Column(
-        children: <Widget>[
- 
-          RadioListTile(
-              groupValue: radioItem,
-              title: Text('Dining'),
-              value: 'Dining',
-              onChanged: (String ?val) {
-                setState(() {
-                  radioItem = val!;
-                });
-              },
-            ),
- 
-           RadioListTile(
-              groupValue: radioItem,
-              title: Text('Takeaway'),
-              value: 'Takeaway',
-              onChanged: (String?val) {
-                setState(() {
-                  radioItem = val!;
-                });
-              },
-            ),
- 
-          //  Text('$radioItem', style: TextStyle(fontSize: 23),)
-          
-        ],
-    ),
+              SizedBox(
+                height: 30,
+              ),
+              Column(
+                children: <Widget>[
+                  RadioListTile(
+                    groupValue: radioItem,
+                    title: Text('Dining'),
+                    value: 'Dining',
+                    onChanged: (String? val) {
+                      setState(() {
+                        radioItem = val!;
+                      });
+                    },
+                  ),
+                  RadioListTile(
+                    groupValue: radioItem,
+                    title: Text('Takeaway'),
+                    value: 'Takeaway',
+                    onChanged: (String? val) {
+                      setState(() {
+                        radioItem = val!;
+                      });
+                    },
+                  ),
+                  //  Text('$radioItem', style: TextStyle(fontSize: 23),)
+                ],
+              ),
               // Text('$status'),
               orderStatus.value
                   ? Container()
                   : InkWell(
                       onTap: () async {
                         // ignore: unnecessary_null_comparison
-                        if(id!=null&&radioItem!=null){
-                        await Database().order(radioItem);
-                        // Database().statusCahnge();
-if(radioItem=='Takeaway'){
-Get.off(()=>PymentMethod());
-}
-else
-                        Get.off(() => OrderPlace(),
-                            binding: OrderStatusBinding());
-                        }  
+                        if (id != null && radioItem != '') {
+                          await Database().order(radioItem);
+                          // Database().statusCahnge();
+                          if (radioItem == 'Takeaway') {
+                            Get.off(() => PymentMethod());
+                          } else if (radioItem == 'Dining') {
+                            Get.off(() => OrderPlace(),
+                                binding: OrderStatusBinding());
+                          }
+                        } else if (radioItem == '') {
+                          return dilog();
+                        }
                       },
                       child: Container(
                         alignment: Alignment.bottomCenter,
@@ -259,7 +259,7 @@ else
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             gradient: LinearGradient(
-                              colors: [Colors.yellow, Colors.orange],
+                              colors: [Colors.orange, Colors.orange],
                             ),
                             boxShadow: [
                               BoxShadow(blurRadius: 5.0, color: Colors.grey)
@@ -279,7 +279,7 @@ else
                             Icon(
                               Icons.arrow_forward,
                               color: Colors.white,
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -288,4 +288,10 @@ else
           ),
         ));
   }
+}
+
+dilog() {
+  return AlertDialog(
+    content: Text('PLEASE SELECT YOUR ORDER TERM'),
+  );
 }

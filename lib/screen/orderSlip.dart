@@ -3,11 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:resturant_ui/Binding/all_binding.dart';
+import 'package:resturant_ui/controller/orderStatus_Controller.dart';
+import 'package:resturant_ui/controller/product_Controller.dart';
 import 'package:resturant_ui/controller/resturent_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:resturant_ui/screen/home.dart';
 import 'package:resturant_ui/service/database.dart';
 import '../controller/UserCart_Controller.dart';
+import 'orderPlace.dart';
 
 class OrderSlip extends StatefulWidget {
   @override
@@ -16,16 +20,14 @@ class OrderSlip extends StatefulWidget {
 
 class _OrderSlipState extends State<OrderSlip> {
   final cartController = Get.find<UserCartController>();
-final user= FirebaseAuth.instance.currentUser!.uid;
+  final orderController = Get.find<OrderStatusController>();
+  final user = FirebaseAuth.instance.currentUser!.uid;
   final resturentController = Get.find<ResturentController>();
-
   String formatter = DateFormat('d/M/y-(h:m)').format(DateTime.now());
-
+  
   @override
   int? sum = 0;
-
   int? total = 0;
-
   @override
   void initState() {
     super.initState();
@@ -35,7 +37,12 @@ final user= FirebaseAuth.instance.currentUser!.uid;
   Future<void> price() {
     sum = 0;
     total = 0;
-    return FirebaseFirestore.instance.collection('user').doc(user).collection("PendingOrder").get().then(
+    return FirebaseFirestore.instance
+        .collection('user')
+        .doc(user)
+        .collection("PendingOrder")
+        .get()
+        .then(
       (querySnapshot) {
         querySnapshot.docs.forEach((result) {
           sum = sum! + result.data()['totalprice'] as int?;
@@ -59,17 +66,16 @@ final user= FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-        if (cartController.usercartdata == null &&
-            resturentController.resturentGetter == null) {
-          return CircularProgressIndicator();
-        } else {
-          return Scaffold(
-             appBar: AppBar(
-        backgroundColor: Colors.orange,
-       title: Center(child: Text("Order Slip")) 
-      ),
-            body: Center(
-              child: Column(
+      if (cartController.usercartdata == null &&
+          resturentController.resturentGetter == null) {
+        return CircularProgressIndicator();
+      } else {
+        return Scaffold(
+          appBar: AppBar(
+              backgroundColor: Colors.orange,
+              title: Center(child: Text("Order Slip"))),
+          body: Center(
+            child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -106,13 +112,15 @@ final user= FirebaseAuth.instance.currentUser!.uid;
                                 Text(
                                   "Items",
                                   style: TextStyle(
-                                      fontSize: 15, fontWeight: FontWeight.bold),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Spacer(),
                                 Text(
                                   "Quantity",
                                   style: TextStyle(
-                                      fontSize: 15, fontWeight: FontWeight.bold),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
                                   width: 50,
@@ -120,7 +128,8 @@ final user= FirebaseAuth.instance.currentUser!.uid;
                                 Text(
                                   "Price",
                                   style: TextStyle(
-                                      fontSize: 15, fontWeight: FontWeight.bold),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
                                 )
                               ],
                             ),
@@ -134,7 +143,8 @@ final user= FirebaseAuth.instance.currentUser!.uid;
                                   child: Row(
                                     children: [
                                       Text(
-                                        cartController.usercartdata![index].title!,
+                                        cartController
+                                            .usercartdata![index].title!,
                                         style: TextStyle(
                                           fontSize: 15,
                                           // fontWeight: FontWeight.bold
@@ -182,110 +192,120 @@ final user= FirebaseAuth.instance.currentUser!.uid;
                               // fontWeight: FontWeight.bold
                             ),
                           ),
-                           Image.asset('assets/imgs/paid.png',height: 200,width: 200,),
-                  // SizedBox(
-                  //   height: 50,
-                  // ),
+                          Image.asset(
+                            'assets/imgs/paid.png',
+                            height: 200,
+                            width: 200,
+                          ),
+                          // SizedBox(
+                          //   height: 50,
+                          // ),
                         ],
                       ),
                     ),
                   ),
-                 
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.center,
-                //     children: [
-                //       Container(
-                //         width: 100,
-                //         padding: EdgeInsets.all(15),
-                //         decoration: BoxDecoration(
-                //             borderRadius: BorderRadius.circular(15),
-                //             gradient: LinearGradient(
-                //               colors: [
-                //                 Colors.orangeAccent,
-                //                 Colors.deepOrangeAccent
-                //               ],
-                //             ),
-                //             boxShadow: [
-                //               BoxShadow(blurRadius: 5.0, color: Colors.grey)
-                //             ]),
-                //         child: Row(
-                //           children: <Widget>[
-                //             Spacer(),
-                //             Text(
-                //               "Back",
-                //               textAlign: TextAlign.center,
-                //               style: TextStyle(
-                //                   color: Colors.white,
-                //                   fontWeight: FontWeight.bold,
-                //                   fontSize: 17),
-                //             ),
-                //             Spacer(),
-                //             Icon(
-                //               Icons.arrow_back,
-                //               color: Colors.white,
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //       SizedBox(
-                //         width: 100,
-                //       ),
-                //       Container(
-                //         width: 100,
-                //         padding: EdgeInsets.all(15),
-                //         decoration: BoxDecoration(
-                //             borderRadius: BorderRadius.circular(15),
-                //             gradient: LinearGradient(
-                //               colors: [
-                //                 Colors.orangeAccent,
-                //                 Colors.deepOrangeAccent
-                //               ],
-                //             ),
-                //             boxShadow: [
-                //               BoxShadow(blurRadius: 5.0, color: Colors.grey)
-                //             ]),
-                //         child: Row(
-                //           children: <Widget>[
-                //             Spacer(),
-                //             Text(
-                //               "Save",
-                //               textAlign: TextAlign.center,
-                //               style: TextStyle(
-                //                   color: Colors.white,
-                //                   fontWeight: FontWeight.bold,
-                //                   fontSize: 17),
-                //             ),
-                //             Spacer(),
-                //             Icon(
-                //               Icons.save,
-                //               color: Colors.white,
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //     ],
-                //   )
-                // ],
-                TextButton(onPressed: (){
-                   Database().orderNow();
-                  Get.offAll(()=>Home());
-                }, child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("Go To Home",style: TextStyle(
-                      fontSize: 18
-                    ),),
-                    Icon(Icons.arrow_forward)
-                  ],
-                ))
-                ]
-              ),
-            ),
-          );
-        }
-      });
-    
+
+                  //   Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     crossAxisAlignment: CrossAxisAlignment.center,
+                  //     children: [
+                  //       Container(
+                  //         width: 100,
+                  //         padding: EdgeInsets.all(15),
+                  //         decoration: BoxDecoration(
+                  //             borderRadius: BorderRadius.circular(15),
+                  //             gradient: LinearGradient(
+                  //               colors: [
+                  //                 Colors.orangeAccent,
+                  //                 Colors.deepOrangeAccent
+                  //               ],
+                  //             ),
+                  //             boxShadow: [
+                  //               BoxShadow(blurRadius: 5.0, color: Colors.grey)
+                  //             ]),
+                  //         child: Row(
+                  //           children: <Widget>[
+                  //             Spacer(),
+                  //             Text(
+                  //               "Back",
+                  //               textAlign: TextAlign.center,
+                  //               style: TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontWeight: FontWeight.bold,
+                  //                   fontSize: 17),
+                  //             ),
+                  //             Spacer(),
+                  //             Icon(
+                  //               Icons.arrow_back,
+                  //               color: Colors.white,
+                  //             )
+                  //           ],
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //         width: 100,
+                  //       ),
+                  //       Container(
+                  //         width: 100,
+                  //         padding: EdgeInsets.all(15),
+                  //         decoration: BoxDecoration(
+                  //             borderRadius: BorderRadius.circular(15),
+                  //             gradient: LinearGradient(
+                  //               colors: [
+                  //                 Colors.orangeAccent,
+                  //                 Colors.deepOrangeAccent
+                  //               ],
+                  //             ),
+                  //             boxShadow: [
+                  //               BoxShadow(blurRadius: 5.0, color: Colors.grey)
+                  //             ]),
+                  //         child: Row(
+                  //           children: <Widget>[
+                  //             Spacer(),
+                  //             Text(
+                  //               "Save",
+                  //               textAlign: TextAlign.center,
+                  //               style: TextStyle(
+                  //                   color: Colors.white,
+                  //                   fontWeight: FontWeight.bold,
+                  //                   fontSize: 17),
+                  //             ),
+                  //             Spacer(),
+                  //             Icon(
+                  //               Icons.save,
+                  //               color: Colors.white,
+                  //             )
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   )
+                  // ],
+                  TextButton(
+                      onPressed: () async{
+                        if(orderController.status!.order=='Dining'){
+ await Database().orderNow();
+ await Get.offAll(Home());
+                        }
+                        Get.off(() => OrderPlace(),binding: OrderStatusBinding());
+                        Database().orderstatus('Pending');
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Go To Home",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          Icon(Icons.arrow_forward)
+                        ],
+                      ))
+                ]),
+      
+          ),
+        );
+      }
+    });
   }
 }

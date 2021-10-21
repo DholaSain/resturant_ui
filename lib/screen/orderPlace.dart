@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:resturant_ui/controller/orderStatus_Controller.dart';
+import 'package:resturant_ui/screen/home.dart';
 import 'package:resturant_ui/screen/payment_method.dart';
+import 'package:resturant_ui/service/database.dart';
 
 // ignore: must_be_immutable
 class OrderPlace extends StatelessWidget {
@@ -12,12 +14,19 @@ class OrderPlace extends StatelessWidget {
   String? status;
   RxBool visibilityStatus = false.obs;
   RxBool orderStatus = false.obs;
-  image(String done) {
-    if (done == 'Done') {
+  RxBool doneStatus = false.obs;
+  image(String done ,String order) {
+    if (done == 'Done'&& order=='Dining') {
       visibilityStatus.value = true;
       orderStatus.value=false;
       return Lottie.asset('assets/imgs/1.json');
-    } else if (done == 'Preparing') {
+    } 
+    else if(done=='Done'){
+      visibilityStatus.value=false;
+      orderStatus.value=true;
+      doneStatus.value=true;
+    }
+    else if (done == 'Preparing') {
       visibilityStatus.value = false;
       orderStatus.value=true;
       return Lottie.asset('assets/imgs/3.json');
@@ -39,6 +48,10 @@ class OrderPlace extends StatelessWidget {
       } else {
         return Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+    icon: Icon(Icons.arrow_back, color: Colors.white),
+    onPressed: () => Get.to(Home())),
+  
             toolbarHeight: 80,
             backgroundColor: Colors.orange,
             title: Text("Your order is ${statusController.status!.status}"),
@@ -53,7 +66,7 @@ class OrderPlace extends StatelessWidget {
               Container(
                 // color: Colors.orange,
                 child: Center(
-                  child: image('${statusController.status!.status}'),
+                  child: image('${statusController.status!.status}','${statusController.status!.order}'),
                 ),
               ),
              
@@ -69,6 +82,7 @@ class OrderPlace extends StatelessWidget {
                   ),
                     )
                   : Text(""),
+                
               visibilityStatus.value
                   ? InkWell(
                       onTap: () {
@@ -132,6 +146,41 @@ class OrderPlace extends StatelessWidget {
                   ],
                 ),
               ),
+                doneStatus.value?
+                  InkWell(
+                      onTap: () async{
+                       await  Database().orderstatus('Complete');
+                        Database().orderNow();
+                       
+                        Get.offAll(Home());
+                      },
+                      child: Container(
+                        width: 200,
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: LinearGradient(
+                              colors: [Colors.redAccent, Colors.red],
+                            ),
+                            boxShadow: [
+                              BoxShadow(blurRadius: 5.0, color: Colors.grey)
+                            ]),
+                        
+                            // Spacer(),
+                         child:   Expanded(
+                              child: Text(
+                                "Have You Receive Your Order",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19),
+                              ),
+                            ),
+                            
+                          
+                      ),
+                    ):Container(),
                   Spacer()
             ],
           )),

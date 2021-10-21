@@ -19,10 +19,15 @@ class Home extends StatelessWidget {
           actions: [
             Container(child: CartIcon()),
           ],
-          title:   Obx(() => Text("${resturent.resturentGetter!.name}",style: TextStyle(
-                            fontSize: 20,fontWeight: FontWeight.bold,
-                          ),)),
-         
+          title: Obx(
+            () => Text(
+              "${resturent.resturentGetter!.name}",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold, 
+              ),
+            ),
+          ),
         ),
         bottomNavigationBar: BottomNavbar(),
         backgroundColor: Colors.white,
@@ -80,10 +85,9 @@ class Home extends StatelessWidget {
                   height: 50,
                   width: 150,
                   decoration: BoxDecoration(
-                    
                     // border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(21.0),
-                    
+
                     color: Colors.orange,
                     boxShadow: [
                       BoxShadow(

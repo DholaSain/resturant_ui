@@ -17,14 +17,13 @@ void main() async {
   Get.lazyPut<AuthController>(() => AuthController());
   Get.lazyPut<UserController>(() => UserController());
   Get.put<ResturentController>(ResturentController());
-  Get.put<UserCartController>(UserCartController());
   Get.put<CategoryController>(CategoryController());
-    // Get.put(OrderStatusController());
+  // Get.put(OrderStatusController());
   Get.lazyPut<OrderStatusController>(() => OrderStatusController());
-    DynamicLinkService().handleDynamicLinks();
+  DynamicLinkService().handleDynamicLinks();
+  Get.put<UserCartController>(UserCartController());
   runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -15,7 +14,8 @@ class PaymentProcess extends StatelessWidget {
     return Obx(() {
       if (statusController.status == null) {
         return CircularProgressIndicator();
-      } else if (statusController.status!.status == 'Done'||statusController.status!.status == 'Payment') {
+      } else if (statusController.status!.status == 'Done' ||
+          statusController.status!.status == 'Payment') {
         // ignore: unused_element
         return Scaffold(
           body: Center(
@@ -25,51 +25,68 @@ class PaymentProcess extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Lottie.asset('assets/imgs/p.json', height: 100),
-                 SizedBox(height: 50,),
-                  Text("Pleas Pay Your Bill",style: TextStyle(
-                    fontSize:20,
-                    fontWeight: FontWeight.bold
-                  ),)
+                SizedBox(
+                  height: 50,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Text(
+                  "Your Order Id is ",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),Text(
+                  "${statusController.status!.orderId}",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20, fontWeight: FontWeight.bold),
+                ),],),
+                SizedBox(
+                  height: 50,
+                ),
+
+                Text(
+                  "Pleas Pay Your Bill",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
                 
               ],
             ),
           )),
         );
       } else if (statusController.status!.status == 'Complete') {
-          // ignore: unused_element
-         return Compelet();
-         
-      } 
-      else if(statusController.status!.status == 'Preparing'){
-     return  OrderPlace();
-      }
-      else {
+        // ignore: unused_element
+        return Compelet();
+      } else if (statusController.status!.status == 'Preparing') {
+        return OrderPlace();
+      } else {
         return CircularProgressIndicator();
       }
     });
   }
 }
+
 class Compelet extends StatelessWidget {
- 
   @override
   Widget build(BuildContext context) {
-   Timer(Duration(seconds: 2), () => Get.to(OrderSlip(),binding: UserCartBinding()));
-          return Scaffold(
-            body: Center(
-                child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset('assets/imgs/checked.png', height: 100),
-                  SizedBox(height: 50,),
-                  Text(" Payment is done ",style: TextStyle(
-                    fontSize:20,
-                    fontWeight: FontWeight.bold
-                  ),)
-                ],
-              ),
-            )),
-          );
+    Timer(Duration(seconds: 2),
+        () => Get.to(OrderSlip(), binding: UserCartBinding()));
+    return Scaffold(
+      body: Center(
+          child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset('assets/imgs/checked.png', height: 100),
+            SizedBox(
+              height: 50,
+            ),
+            Text(
+              " Payment is done ",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
+      )),
+    );
   }
 }

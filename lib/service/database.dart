@@ -263,7 +263,13 @@ _firestore.collection('user').doc(userId).collection("PendingOrder").doc(product
       },
     );
   }
+Future<void>orderstatus(String change)async{
+   _firestore.collection('user').doc(userId).collection("orderStatus").doc("orderStatus").update({
+  
+  'status':change,
 
+      });
+}
   Future<void> order(String order) async {
     var l;
     String? name;

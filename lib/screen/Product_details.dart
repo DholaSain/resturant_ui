@@ -184,7 +184,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               gradient: LinearGradient(
-                                colors: [Colors.yellow, Colors.orange],
+                                colors: [Colors.orange, Colors.orange],
                               ),
                               boxShadow: [
                                 BoxShadow(blurRadius: 5.0, color: Colors.grey)
