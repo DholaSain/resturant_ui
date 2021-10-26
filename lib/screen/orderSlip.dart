@@ -17,14 +17,12 @@ class OrderSlip extends StatefulWidget {
   @override
   State<OrderSlip> createState() => _OrderSlipState();
 }
-
 class _OrderSlipState extends State<OrderSlip> {
   final cartController = Get.find<UserCartController>();
   final orderController = Get.find<OrderStatusController>();
   final user = FirebaseAuth.instance.currentUser!.uid;
   final resturentController = Get.find<ResturentController>();
   String formatter = DateFormat('d/M/y-(h:m)').format(DateTime.now());
-  
   @override
   int? sum = 0;
   int? total = 0;
@@ -53,7 +51,6 @@ class _OrderSlipState extends State<OrderSlip> {
       },
     );
   }
-
   void onInit() {
     // super.onInit();
   }
@@ -204,7 +201,6 @@ class _OrderSlipState extends State<OrderSlip> {
                       ),
                     ),
                   ),
-
                   //   Row(
                   //     mainAxisAlignment: MainAxisAlignment.center,
                   //     crossAxisAlignment: CrossAxisAlignment.center,
@@ -282,12 +278,13 @@ class _OrderSlipState extends State<OrderSlip> {
                   //   )
                   // ],
                   TextButton(
-                      onPressed: () async{
-                        if(orderController.status!.order=='Dining'){
- await Database().orderNow();
- await Get.offAll(Home());
+                      onPressed: () async {
+                        if (orderController.status!.order == 'Dining') {
+                          await Database().orderNow();
+                          await Get.offAll(Home());
                         }
-                        Get.off(() => OrderPlace(),binding: OrderStatusBinding());
+                        Get.off(() => OrderPlace(),
+                            binding: OrderStatusBinding());
                         Database().orderstatus('Pending');
                       },
                       child: Row(
@@ -302,7 +299,6 @@ class _OrderSlipState extends State<OrderSlip> {
                         ],
                       ))
                 ]),
-      
           ),
         );
       }

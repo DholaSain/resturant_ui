@@ -141,11 +141,11 @@ Stream<List<OrderStatusModel>> orderStatus()  {
 //     });
 
 //   }
-  Future<ResturentModel> getResturent() async {
+  Future<ResturentModel> getResturent(String id) async {
     try {
       DocumentSnapshot _docSnapShot = await _firestore
           .collection("Resturent")
-          .doc("MRsBaovyWkTXCLa95d2vMcymLjw1")
+          .doc(id)
           .get();
       return ResturentModel.fromDocumentSnapshot(_docSnapShot);
     } catch (e) {

@@ -87,7 +87,6 @@ class Home extends StatelessWidget {
                   decoration: BoxDecoration(
                     // border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(21.0),
-
                     color: Colors.orange,
                     boxShadow: [
                       BoxShadow(

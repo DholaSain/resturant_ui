@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:get/get.dart';
 import 'package:resturant_ui/Model/user_model.dart';
+import 'package:resturant_ui/controller/category_controller.dart';
+import 'package:resturant_ui/controller/orderStatus_Controller.dart';
+import 'package:resturant_ui/controller/resturent_controller.dart';
 import 'package:resturant_ui/controller/user_controller.dart';
 import 'package:resturant_ui/screen/home.dart';
 import 'package:resturant_ui/service/database.dart';
@@ -16,7 +18,6 @@ class AuthController extends GetxController {
 //   void dependencies() {
 //     Get.lazyPut<AuthController>(() => AuthController());
 //   }
-
   // ignore: must_call_super
   onInit() {
     _firebaseUser.bindStream(_auth.authStateChanges());
@@ -31,7 +32,6 @@ class AuthController extends GetxController {
     try {
       UserCredential _authResult = await _auth.createUserWithEmailAndPassword(
           email: email.trim(), password: password);
-
       //create user in database.dart
       UserModel _user = UserModel(
         id: _authResult.user!.uid,
@@ -57,6 +57,9 @@ class AuthController extends GetxController {
     try {
       UserCredential _authResult = await _auth.signInWithEmailAndPassword(
           email: email.trim(), password: password);
+          Get.put<ResturentController>(ResturentController());
+  Get.put<CategoryController>(CategoryController());
+  Get.put(OrderStatusController());
       Get.to(Home());
       Get.find<UserController>().user =
           await Database().getUser(_authResult.user!.uid);
