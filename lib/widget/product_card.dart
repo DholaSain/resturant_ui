@@ -13,6 +13,7 @@ const defaultPadding = 16.0;
 class ProductsCard extends StatelessWidget {
   int? quantity = 0;
   final uid = FirebaseAuth.instance.currentUser!.uid;
+
   Color buttonDefualtColor = Colors.white;
   final cartController = Get.find<UserCartController>();
   final productController = Get.find<ProductController>();
@@ -61,6 +62,30 @@ class ProductsCard extends StatelessWidget {
               childAspectRatio: 1 / 1.5,
             ),
             itemBuilder: (context, index) {
+              //  FutureBuilder<DocumentSnapshot>(
+              //                             future: FirebaseFirestore.instance
+              //                                 .collection('user')
+              //                                 .doc(uid)
+              //                                 .collection('PendingOrder')
+              //                                 .doc(productController
+              //                                     .dataGetter![index].id)
+              //                                 .get(),
+              //                             builder: (context,
+              //                                 AsyncSnapshot<DocumentSnapshot>
+              //                                     snapshot) {
+              //                               if (snapshot.hasError)
+              //                                 return Center(
+              //                                   child: Text(snapshot.hasError
+              //                                       .toString()),
+              //                                 );
+              //                               if (snapshot.hasData) {
+              //                                 return quantity=
+              //                                       snapshot.data!['quantity'];
+              //                               } else {
+              //                                 return Container();
+              //                               }
+              //                             },
+              //                           );
               return GestureDetector(
                   onTap: () {
                     Get.to(RestaurantPage(
@@ -70,6 +95,9 @@ class ProductsCard extends StatelessWidget {
                       price: productController.dataGetter![index].fprice!,
                       image: productController.dataGetter![index].fimage!,
                     ));
+                    //  categoryName.value=  productController.dataGetter![index].name!;
+                    // Get.to(() => CategoryProduct(productController.dataGetter![index].name!),
+                    //   binding: ProductsBinding());
                   },
                   child: Container(
                     height: 450,
@@ -89,6 +117,7 @@ class ProductsCard extends StatelessWidget {
                     ),
                     margin: EdgeInsets.all(5),
                     padding: EdgeInsets.all(7),
+                    // width: MediaQuery.of(context).size.width / 2,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -107,8 +136,10 @@ class ProductsCard extends StatelessWidget {
                         SizedBox(
                           height: 8,
                         ),
+
                         Text(
                           productController.dataGetter![index].ftitle!,
+                          // textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 17,
                               color: Colors.black,
@@ -116,6 +147,7 @@ class ProductsCard extends StatelessWidget {
                         ),
                         Text(
                           productController.dataGetter![index].fdec!,
+                          // textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 16,
                               color: Colors.grey,
@@ -124,15 +156,72 @@ class ProductsCard extends StatelessWidget {
                         Text(
                           "Rs "
                           '${productController.dataGetter![index].fprice!}',
+                          // textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 18,
                               color: Colors.red,
                               fontWeight: FontWeight.bold),
                         ),
+
                         Obx(() {
                           return cartController.usercartdata!.any((element) =>
                                   element.id!.contains(
                                       '${productController.dataGetter![index].id}'))
+                              // ? InkWell(
+                              //     onTap: () {
+                              //       try {
+                              //         // totalPrice = widget.price! * _n;
+                              //         Database().addCart(
+                              //             productController
+                              //                 .dataGetter![index].id!,
+                              //             1,
+                              //             productController
+                              //                 .dataGetter![index].fprice!,
+                              //             productController
+                              //                 .dataGetter![index].fimage!,
+                              //             productController
+                              //                 .dataGetter![index].ftitle!,
+                              //             productController
+                              //                 .dataGetter![index].fdec!);
+
+                              //         Get.snackbar(
+                              //             "${productController.dataGetter![index].ftitle} Add in Cart",
+                              //             "Cheak in Cart",
+                              //             snackPosition: SnackPosition.BOTTOM,
+                              //             backgroundColor: Colors.green,
+                              //             colorText: Colors.white);
+                              //       } catch (e) {
+                              //         Get.snackbar(
+                              //             "${productController.dataGetter![index].ftitle} Not Added",
+                              //             e.toString(),
+                              //             snackPosition: SnackPosition.BOTTOM);
+                              //       }
+                              //     },
+                              //     child: InkWell(
+                              //       onTap: () {
+                              //         Database().removeCart(productController
+                              //             .dataGetter![index].id!);
+                              //       },
+                              //       child: Container(
+                              //         width: 40,
+                              //         margin: EdgeInsets.all(5),
+                              //         padding: EdgeInsets.all(5),
+                              //         decoration: BoxDecoration(
+                              //           border: Border.all(color: Colors.red),
+                              //           borderRadius: BorderRadius.circular(10),
+                              //           color: Colors.white,
+                              //         ),
+                              //         child: Text(
+                              //           'Delete to Cart',
+                              //           textAlign: TextAlign.center,
+                              //           style: TextStyle(
+                              //               fontSize: 18,
+                              //               fontWeight: FontWeight.bold,
+                              //               color: Colors.red),
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   )
                               ? Column(
                                   children: [
                                     Divider(),
@@ -171,7 +260,30 @@ class ProductsCard extends StatelessWidget {
                                                                 .fprice!,
                                                             snapshot.data![
                                                                 'quantity']!),
-                                                      )),
+                                                      )
+                                                      //      FloatingActionButton(
+                                                      //   onPressed: () {
+                                                      //     Database().removeLike(
+                                                      //         productController
+                                                      //             .dataGetter![
+                                                      //                 index]
+                                                      //             .id!,
+                                                      //         productController
+                                                      //             .dataGetter![
+                                                      //                 index]
+                                                      //             .fprice!,
+                                                      //         snapshot.data![
+                                                      //             'quantity']!);
+                                                      //   },
+                                                      //   child: new Icon(
+                                                      //     Icons.remove,
+                                                      //     size: 20,
+                                                      //     color: Colors.black,
+                                                      //   ),
+                                                      //   backgroundColor:
+                                                      //       Colors.white,
+                                                      // ),
+                                                      ),
                                                   Text(
                                                     "${snapshot.data!['quantity']}",
                                                     style: TextStyle(
@@ -215,6 +327,7 @@ class ProductsCard extends StatelessWidget {
                               : InkWell(
                                   onTap: () {
                                     try {
+                                      // totalPrice = widget.price! * _n;
                                       Database().addCart(
                                           productController
                                               .dataGetter![index].id!,
@@ -262,9 +375,40 @@ class ProductsCard extends StatelessWidget {
                                   ),
                                 );
                         }),
+
                         SizedBox(
                           height: 5,
                         )
+                        // Text("${productController.dataGetter![index].id}"),
+                        // Text('${cartController.usercartdata![index].id}'),
+                        // msgs.id ==cartController.usercartdata![index].id?
+
+//                                     Container(
+//                                       width: 50,
+//                                       margin: EdgeInsets.all(5),
+//                                       padding: EdgeInsets.all(5),
+//                                       decoration:BoxDecoration(
+// borderRadius: BorderRadius.circular(10),
+//                                         color: Colors.red,
+//                                       ),
+//                                       child: Text('Add to Cart',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,
+//                                       fontWeight: FontWeight.bold,
+//                                       color: Colors.white),),
+//                                     )
+//                                   : Container()
+                        // Text(
+                        //   productController.dataGetter![index].ftitle!,
+                        //   style: TextStyle(fontWeight: FontWeight.bold),
+                        // ),
+                        // SizedBox(
+                        //   height: 10,
+                        // ),
+                        // Text(
+                        //   "Rs:" +
+                        //       "${categoryController.dataGetter![index].fprice!}",
+                        //   style: TextStyle(
+                        //       fontWeight: FontWeight.bold, color: Colors.red),
+                        // ),
                       ],
                     ),
                   ));

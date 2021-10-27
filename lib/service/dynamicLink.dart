@@ -1,5 +1,6 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:get/get.dart';
+import 'package:resturant_ui/controller/UserCart_Controller.dart';
 import 'package:resturant_ui/controller/category_controller.dart';
 import 'package:resturant_ui/controller/orderStatus_Controller.dart';
 import 'package:resturant_ui/controller/resturent_controller.dart';
@@ -22,7 +23,9 @@ class DynamicLinkService {
           Get.put(ResturentController());
           Get.put<CategoryController>(CategoryController());
           Get.put(OrderStatusController());
+          Get.put<UserCartController>(UserCartController());
           Get.to(() => Home());
+
           // _navigationService.navigateTo(ProfileRoute, arguments: userName);
         }
       }
@@ -41,7 +44,9 @@ class DynamicLinkService {
             Get.put(ResturentController());
             Get.put<CategoryController>(CategoryController());
             Get.put(OrderStatusController());
+            Get.put<UserCartController>(UserCartController());
             Get.to(() => Home());
+            
           }
         }
       }

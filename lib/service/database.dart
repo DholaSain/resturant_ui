@@ -185,11 +185,11 @@ _firestore.collection('user').doc(userId).collection("PendingOrder").doc(product
       return dataList;
     });
   }
-
+// "MRsBaovyWkTXCLa95d2vMcymLjw1"
   Stream<List<CategoryModel>> categoryFirestore() {
     return _firestore
         .collection('Resturent')
-        .doc("MRsBaovyWkTXCLa95d2vMcymLjw1")
+        .doc(resturentId.value)
         .collection("categories")
         .snapshots()
         .map((QuerySnapshot queryData) {
@@ -204,7 +204,7 @@ _firestore.collection('user').doc(userId).collection("PendingOrder").doc(product
   Stream<List<ProductModel>> allProducts() {
     return _firestore
         .collection('Resturent')
-        .doc("MRsBaovyWkTXCLa95d2vMcymLjw1")
+        .doc(resturentId.value)
         .collection("items")
         .where(
           "Show",
@@ -280,7 +280,7 @@ Future<void>orderstatus(String change)async{
     try {
       await _firestore
           .collection('Resturent')
-          .doc('MRsBaovyWkTXCLa95d2vMcymLjw1')
+          .doc(resturentId.value)
           .collection('ordertoken')
           .get()
           .then((querySnapshot) {
@@ -290,7 +290,7 @@ Future<void>orderstatus(String change)async{
           number++;
           _firestore
               .collection("Resturent")
-              .doc("MRsBaovyWkTXCLa95d2vMcymLjw1")
+              .doc(resturentId.value)
               .collection("ordertoken")
               .doc('token')
               .update({'number': number});
@@ -302,7 +302,7 @@ Future<void>orderstatus(String change)async{
 
       await _firestore
           .collection("Resturent")
-          .doc("MRsBaovyWkTXCLa95d2vMcymLjw1")
+          .doc(resturentId.value)
           .collection("order")
           .doc(l)
           .set({'tokenId': l, 'time': FieldValue.serverTimestamp()});
@@ -315,7 +315,7 @@ Future<void>orderstatus(String change)async{
         querySnapshot.docs.forEach((product) {
           _firestore
               .collection("Resturent")
-              .doc("MRsBaovyWkTXCLa95d2vMcymLjw1")
+              .doc(resturentId.value)
               .collection("order")
               .doc('$l')
               .collection("$l")
