@@ -48,30 +48,6 @@ class MyApp extends StatelessWidget {
   }
 }
 // ignore: must_be_immutable
-class LinkScreen extends StatelessWidget {
-  String name="MRsBaovyWkTXCLa95d2vMcymLjw1";
-   LinkScreen({ Key? key }) : super(key: key);
-   TextEditingController uid= TextEditingController(text: "MRsBaovyWkTXCLa95d2vMcymLjw1");
-final Rxn<String> link = Rxn<String>();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          Obx(() => Text(link.value ?? 'link here')),
-          TextFormField(
-            controller: uid,
-          ),
-          MaterialButton(onPressed: () async{
-          link.value = await AppUtils.buildDynamicLink(uid.text);
-          print(link.value?? 'No link');
-          }, child: Text('Generate Link'))
-        ],),
-      ),
-    );
-  }
-}
+
 
 
