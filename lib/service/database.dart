@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -39,27 +38,26 @@ class Database {
     }
   }
 
-Stream<List<OrderStatusModel>> orderStatus()  {
+  Stream<List<OrderStatusModel>> orderStatus() {
     try {
-       return _firestore
-        .collection('user')
-        .doc(userId)
-        .collection("orderStatus")
-        .snapshots()
-        .map((QuerySnapshot queryData) {
-      List<OrderStatusModel> dataList = [];
-      queryData.docs.forEach((id) {
-        dataList.add(OrderStatusModel.fromDocumentSnapshot(id));
+      return _firestore
+          .collection('user')
+          .doc(userId)
+          .collection("orderStatus")
+          .snapshots()
+          .map((QuerySnapshot queryData) {
+        List<OrderStatusModel> dataList = [];
+        queryData.docs.forEach((id) {
+          dataList.add(OrderStatusModel.fromDocumentSnapshot(id));
+        });
+        return dataList;
       });
-      return dataList;
-    });
-     
     } catch (e) {
       print(e);
       rethrow;
     }
   }
-  
+
   Future<void> addCart(String id, int quantity, int price, String image,
       String title, String dec) async {
     try {
@@ -73,10 +71,8 @@ Stream<List<OrderStatusModel>> orderStatus()  {
         "ProductId": id,
         "quantity": quantity,
         "totalprice": price,
-        "image": image,
-        "title": title,
         "dec": dec,
-        'status':'start',
+        'status': 'start',
       });
     } catch (e) {
       Get.snackbar("Not upload", e.toString(),
@@ -106,7 +102,12 @@ Stream<List<OrderStatusModel>> orderStatus()  {
           .get()
           .then((querySnapshot) {
         querySnapshot.docs.forEach((product) {
-          _firestore.collection("user").doc(userId).collection('PendingOrder').doc(product.get('ProductId')).delete();
+          _firestore
+              .collection("user")
+              .doc(userId)
+              .collection('PendingOrder')
+              .doc(product.get('ProductId'))
+              .delete();
         });
       });
     } catch (e) {
@@ -143,33 +144,35 @@ Stream<List<OrderStatusModel>> orderStatus()  {
 //   }
   Future<ResturentModel> getResturent(String id) async {
     try {
-      DocumentSnapshot _docSnapShot = await _firestore
-          .collection("Resturent")
-          .doc(id)
-          .get();
+      DocumentSnapshot _docSnapShot =
+          await _firestore.collection("Resturent").doc(id).get();
       return ResturentModel.fromDocumentSnapshot(_docSnapShot);
     } catch (e) {
       print(e);
       rethrow;
     }
   }
-Future statusCahnge()async{
 
-  await _firestore
-          .collection('user')
-          .doc(userId)
-          .collection('PendingOrder')
-          .get()
-          .then((querySnapshot) {
-        querySnapshot.docs.forEach((product) {
-_firestore.collection('user').doc(userId).collection("PendingOrder").doc(product.get('ProductId')).update({
-  'status':'Pending',
-});
+  Future statusCahnge() async {
+    await _firestore
+        .collection('user')
+        .doc(userId)
+        .collection('PendingOrder')
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((product) {
+        _firestore
+            .collection('user')
+            .doc(userId)
+            .collection("PendingOrder")
+            .doc(product.get('ProductId'))
+            .update({
+          'status': 'Pending',
+        });
+      });
+    });
+  }
 
-        });});
-
-
-}
   Stream<List<UserCartModel>> usercartFirestore() {
     return _firestore
         .collection('user')
@@ -185,6 +188,7 @@ _firestore.collection('user').doc(userId).collection("PendingOrder").doc(product
       return dataList;
     });
   }
+
 // "MRsBaovyWkTXCLa95d2vMcymLjw1"
   Stream<List<CategoryModel>> categoryFirestore() {
     return _firestore
@@ -206,14 +210,6 @@ _firestore.collection('user').doc(userId).collection("PendingOrder").doc(product
         .collection('Resturent')
         .doc(resturentId.value)
         .collection("items")
-        .where(
-          "Show",
-          isEqualTo: true,
-        )
-        .where(
-          "category",
-          isEqualTo: categoryName.value,
-        )
         .snapshots()
         .map((QuerySnapshot querySnapshot) {
       List<ProductModel> productsList = [];
@@ -226,7 +222,7 @@ _firestore.collection('user').doc(userId).collection("PendingOrder").doc(product
 
   Future<void> addLike(String uid, int price, int quantity) async {
     int sum;
-    quantity = quantity + 1;
+
     sum = quantity;
     _firestore
         .collection("user")
@@ -236,19 +232,14 @@ _firestore.collection('user').doc(userId).collection("PendingOrder").doc(product
         .update(
       {
         'quantity': sum,
-        'totalprice': sum * price,
       },
     );
   }
 
   Future<void> removeLike(String uid, int price, int quantity) async {
     int sum;
-    if (quantity == 1) {
-      quantity = 1;
-    } else if (quantity > 1) {
-      quantity = quantity - 1;
-    }
-    
+
+
     //  quantity=quantity-1;
     sum = quantity;
     _firestore
@@ -259,21 +250,22 @@ _firestore.collection('user').doc(userId).collection("PendingOrder").doc(product
         .update(
       {
         'quantity': sum,
-        'totalprice': sum * price,
       },
     );
   }
-Future<void>orderstatus(String change)async{
-   _firestore.collection('user').doc(userId).collection("orderStatus").doc("orderStatus").update({
-  
-  'status':change,
 
-      });
-}
+  Future<void> orderstatus(String change) async {
+    _firestore
+        .collection('user')
+        .doc(userId)
+        .collection("orderStatus")
+        .doc("orderStatus")
+        .update({
+      'status': change,
+    });
+  }
+
   Future<void> order(String order) async {
-    var l;
-    String? name;
-    late int number = 0;
     // var l = new  rng.nextInt(10000);FirebaseFirestore.instance
 
 // l=namenumber;
@@ -285,27 +277,17 @@ Future<void>orderstatus(String change)async{
           .get()
           .then((querySnapshot) {
         querySnapshot.docs.forEach((product) {
-          name = product.data()['name'];
-          number = product.data()['number'];
-          number++;
           _firestore
               .collection("Resturent")
               .doc(resturentId.value)
-              .collection("ordertoken")
-              .doc('token')
-              .update({'number': number});
-          number.toString();
+              .collection("ordertoken");
         });
       });
-
-      l = '$name' + '$number';
 
       await _firestore
           .collection("Resturent")
           .doc(resturentId.value)
-          .collection("order")
-          .doc(l)
-          .set({'tokenId': l, 'time': FieldValue.serverTimestamp()});
+          .collection("order");
       await FirebaseFirestore.instance
           .collection('user')
           .doc(userId)
@@ -317,38 +299,41 @@ Future<void>orderstatus(String change)async{
               .collection("Resturent")
               .doc(resturentId.value)
               .collection("order")
-              .doc('$l')
-              .collection("$l")
+              .doc('')
+              .collection("")
               .add({
             'quantity': product.data()['quantity'],
-            'image': product.data()['image'],
-            'title': product.data()['title'],
-            'dec': product.data()['dec'],
+
           });
         });
       });
-      if(order=='Takeaway'){
- _firestore.collection('user').doc(userId).collection("orderStatus").doc("orderStatus").set({
-  'orderId':l,
-  'status':"Payment",
-  'order':order,
-      });
+      if (order == 'Takeaway') {
+        _firestore
+            .collection('user')
+            .doc(userId)
+            .collection("orderStatus")
+            .doc("orderStatus")
+            .set({
+          'status': "Payment",
+
+        });
+      } else {
+        _firestore
+            .collection('user')
+            .doc(userId)
+            .collection("orderStatus")
+            .doc("orderStatus")
+            .set({
+          'status': "Pending",
+        });
       }
-      else{
-        _firestore.collection('user').doc(userId).collection("orderStatus").doc("orderStatus").set({
-  'orderId':l,
-  'status':"Pending",
-  'order':order,
-      });
-      }
-      
-      
     } catch (e) {
       Get.snackbar("", e.toString(), snackPosition: SnackPosition.BOTTOM);
     }
   }
-  Future<void> expended(String id,bool cheak)async{
-     try {
+
+  Future<void> expended(String id, bool cheak) async {
+    try {
       await _firestore.collection("Product").doc(id).delete();
     } catch (e) {
       Get.snackbar("Not upload", e.toString(),

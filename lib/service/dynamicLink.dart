@@ -20,11 +20,7 @@ class DynamicLinkService {
         print("init $title");
         if (title != null) {
           resturentId.value = title;
-          Get.put(ResturentController());
-          Get.put<CategoryController>(CategoryController());
-          Get.put(OrderStatusController());
-          Get.put<UserCartController>(UserCartController());
-          Get.to(() => Home());
+
 
           // _navigationService.navigateTo(ProfileRoute, arguments: userName);
         }
@@ -41,11 +37,7 @@ class DynamicLinkService {
           print("onlink $userName");
           if (userName != null) {
             resturentId.value = userName;
-            Get.put(ResturentController());
-            Get.put<CategoryController>(CategoryController());
-            Get.put(OrderStatusController());
-            Get.put<UserCartController>(UserCartController());
-            Get.to(() => Home());
+
             
           }
         }
