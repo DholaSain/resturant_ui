@@ -20,12 +20,9 @@ void main() async {
   await Firebase.initializeApp();
   Get.lazyPut<AuthController>(() => AuthController());
   Get.lazyPut<UserController>(() => UserController());
-  // Get.put<ResturentController>(ResturentController());
-  // Get.put<CategoryController>(CategoryController());
-  // Get.put(OrderStatusController());
-  // Get.lazyPut<OrderStatusController>(() => OrderStatusController());
+
   DynamicLinkService().handleDynamicLinks();
-  // Get.put<UserCartController>(UserCartController());
+
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
