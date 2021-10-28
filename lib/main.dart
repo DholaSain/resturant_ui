@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:resturant_ui/controller/orderStatus_Controller.dart';
 import 'package:resturant_ui/screen/home.dart';
 import 'package:resturant_ui/screen/login.dart';
-import 'package:resturant_ui/screen/qrCode_scanner.dart';
 import 'package:resturant_ui/service/dynamicLink.dart';
 import 'package:resturant_ui/utils/create_dynamicLinks.dart';
 import 'package:resturant_ui/utils/root.dart';
@@ -13,7 +12,6 @@ import 'controller/auth_controller.dart';
 import 'controller/category_controller.dart';
 import 'controller/resturent_controller.dart';
 import 'controller/user_controller.dart';
-import 'screen/qr_code.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +35,7 @@ class MyApp extends StatelessWidget {
         // primarySwatch: Colors.orange,
         fontFamily: 'Montserrat',
       ),
-      home: QRViewExample(),
+      home: Home(),
       // routes: {
       //   'restaurant': (ctx) => RestaurantPage(),
       // },
